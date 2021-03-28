@@ -27,16 +27,13 @@ namespace Valkyrie_Feature_Adder
             string destinationPath = feature.PathDestinationCs;
             string featureName = feature.FeatureName;
 
+            #region Assert
             FileInfo fileInfo = new FileInfo(templateFilePath);
             Debug.Assert(fileInfo.Exists);
-
             Debug.Assert(fileInfo.Extension == ".cs");
-
-            //LastNewFeatureCsPath = destinationDirectory + fileInfo.Name;
-            Debugger.Break();
-
             Debug.Assert(Directory.Exists(destinationDirectory));
             Debug.Assert(!File.Exists(destinationPath));
+            #endregion Assert
 
             string fileContents = File.ReadAllText(templateFilePath);
             fileContents = fileContents.Replace(TemplateName, featureName);
@@ -46,7 +43,7 @@ namespace Valkyrie_Feature_Adder
             AddCsFileToProjectCompile(feature);
         }
 
-        private static void AppendPrefabVariableToPoolListCs(NewFeature feature)
+        public static void AppendPrefabVariableToPoolListCs(NewFeature feature)
         {
             string filePath = feature.PathObjectPoolCs;
             string endTag = feature.TagPrefab;
@@ -58,12 +55,14 @@ namespace Valkyrie_Feature_Adder
             string[] lines = File.ReadAllLines(filePath);
             int endTagLine = FindEndTagLine(endTag, lines, filePath);
 
+            #region Assert
             // Assert coding style - one line of blank space
             // between last prefab and end tag.
             string _blankLine = lines[endTagLine + 1];
             string _lastPrefabLine = lines[endTagLine];
             Debug.Assert(String.IsNullOrWhiteSpace(_blankLine));
             Debug.Assert(!String.IsNullOrWhiteSpace(_lastPrefabLine));
+            #endregion Assert
 
             const string SerializeTag = "        [SerializeField]";
             const string Private = "        private";
@@ -79,20 +78,6 @@ namespace Valkyrie_Feature_Adder
 
             int insertLineNumber = endTagLine - 1;
             InsertLinesToFile(filePath, lines, linesToAdd, insertLineNumber);
-
-            //List<string> allLines = new List<string>(lines.Length + 2);
-
-
-            //for (int i = 0; i < insertLineNumber; i++)
-            //    allLines.Add(lines[i]);
-
-            //allLines.Add(SerializeTag);
-            //allLines.Add(variableLine);
-
-            //for (int i = insertLineNumber; i < lines.Length; i++)
-            //    allLines.Add(lines[i]);
-
-            //File.WriteAllLines(filePath, allLines);
         }
 
         public static void AddCsFileToProjectCompile(NewFeature feature)
@@ -100,9 +85,11 @@ namespace Valkyrie_Feature_Adder
             string filePath = feature.PathDestinationCs;
             string filePathTrimmed = filePath.Replace(UnityPaths.DirProject, "");
 
+            #region Assert
             Debug.Assert(File.Exists(filePath));
             Debug.Assert(filePathTrimmed.StartsWith("Assets\\"));
             Debug.Assert(filePathTrimmed.EndsWith(".cs"));
+            #endregion Assert
 
             string[] lines = File.ReadAllLines(UnityPaths.PathCsproj);
             int endTagLine = FindCsprojCompilationItemGroupLine(lines);
@@ -112,21 +99,7 @@ namespace Valkyrie_Feature_Adder
 
             string compileTag = $"{CompileTagStart}{filePathTrimmed}{CompileTagEnd}";
 
-
             InsertLineToFile(UnityPaths.PathCsproj, lines, compileTag, endTagLine);
-
-            //List<string> allLines = new List<string>(lines.Length + 1);
-            //int insertLineNumber = endTagLine - 1;
-
-            //for (int i = 0; i < insertLineNumber; i++)
-            //    allLines.Add(lines[i]);
-
-            //allLines.Add(compileTag);
-
-            //for (int i = insertLineNumber; i < lines.Length; i++)
-            //    allLines.Add(lines[i]);
-
-            //File.WriteAllLines(UnityPaths.PathCsproj, allLines);
         }
 
         private static int FindCsprojCompilationItemGroupLine(string[] lines)
@@ -151,42 +124,42 @@ namespace Valkyrie_Feature_Adder
             return endTagLine;
         }
 
-        public static void AddPlayerBulletPrefabVariableToCs(NewFeature feature)
-        {
-            AppendPrefabVariableToPoolListCs(feature);
-        }
+        //public static void AddPlayerBulletPrefabVariableToCs(NewFeature feature)
+        //{
+        //    AppendPrefabVariableToPoolListCs(feature);
+        //}
 
-        [Obsolete(Untested + NeedsToPairUnityPrefab)]
-        public static void AddPlayerAdditionalBulletPrefabVariableToCs(NewFeature feature)
-        {
-            //const string FilePath = UnityPaths.PathPlayerBulletPoolCs;
-            //const string EndTag = UnityPaths.TagPlayerAdditionalBullets;
-            AppendPrefabVariableToPoolListCs(feature);
-        }
+        //[Obsolete(Untested + NeedsToPairUnityPrefab)]
+        //public static void AddPlayerAdditionalBulletPrefabVariableToCs(NewFeature feature)
+        //{
+        //    //const string FilePath = UnityPaths.PathPlayerBulletPoolCs;
+        //    //const string EndTag = UnityPaths.TagPlayerAdditionalBullets;
+        //    AppendPrefabVariableToPoolListCs(feature);
+        //}
 
-        [Obsolete(Untested + NeedsToPairUnityPrefab)]
-        public static void AddEnemyBulletPrefabVariableToCs(NewFeature feature)
-        {
-            //const string FilePath = UnityPaths.PathEnemyBulletPoolCs;
-            //const string EndTag = UnityPaths.TagGenericPrefabList;
-            AppendPrefabVariableToPoolListCs(feature);
-        }
+        //[Obsolete(Untested + NeedsToPairUnityPrefab)]
+        //public static void AddEnemyBulletPrefabVariableToCs(NewFeature feature)
+        //{
+        //    //const string FilePath = UnityPaths.PathEnemyBulletPoolCs;
+        //    //const string EndTag = UnityPaths.TagGenericPrefabList;
+        //    AppendPrefabVariableToPoolListCs(feature);
+        //}
 
-        [Obsolete(Untested + NeedsFireStrategy + NeedsToPairUnityPrefab + NeedsToAddEnemyBullet)]
-        public static void AddEnemyPrefabVariableToCs(NewFeature feature)
-        {
-            //const string FilePath = UnityPaths.PathEnemyPoolCs;
-            //const string EndTag = UnityPaths.TagGenericPrefabList;
-            AppendPrefabVariableToPoolListCs(feature);
-        }
+        //[Obsolete(Untested + NeedsFireStrategy + NeedsToPairUnityPrefab + NeedsToAddEnemyBullet)]
+        //public static void AddEnemyPrefabVariableToCs(NewFeature feature)
+        //{
+        //    //const string FilePath = UnityPaths.PathEnemyPoolCs;
+        //    //const string EndTag = UnityPaths.TagGenericPrefabList;
+        //    AppendPrefabVariableToPoolListCs(feature);
+        //}
 
-        [Obsolete(Untested + NeedsToPairUnityPrefab)]
-        public static void AddUIElementPrefabVariableToCs(NewFeature feature)
-        {
-            //const string FilePath = UnityPaths.PathUIElementPoolCs;
-            //const string EndTag = UnityPaths.TagGenericPrefabList;
-            AppendPrefabVariableToPoolListCs(feature);
-        }
+        //[Obsolete(Untested + NeedsToPairUnityPrefab)]
+        //public static void AddUIElementPrefabVariableToCs(NewFeature feature)
+        //{
+        //    //const string FilePath = UnityPaths.PathUIElementPoolCs;
+        //    //const string EndTag = UnityPaths.TagGenericPrefabList;
+        //    AppendPrefabVariableToPoolListCs(feature);
+        //}
 
 
         public static void AddFireStrategyToGameManagerCs(NewFeature feature)
@@ -206,20 +179,6 @@ namespace Valkyrie_Feature_Adder
             string newStrategyLine = $"                new {className}(Prefab<{featureName}Bullet>(), in _FireStrategyManager),";
 
             InsertLineToFile(gameManagerPath, lines, newStrategyLine, endTagLine);
-
-            //List<string> allLines = new List<string>(lines.Length + 1);
-
-            //int insertLineNumber = endTagLine - 1;
-
-            //for (int i = 0; i < insertLineNumber; i++)
-            //    allLines.Add(lines[i]);
-
-            //allLines.Add(newStrategyLine);
-
-            //for (int i = insertLineNumber; i < lines.Length; i++)
-            //    allLines.Add(lines[i]);
-
-            //File.WriteAllLines(gameManagerPath, allLines);
         }
 
         public static void AddFireStrategyToFireStrategyManager(NewFeature feature)
@@ -273,14 +232,13 @@ namespace Valkyrie_Feature_Adder
             return endTagLine;
         }
 
-        // NewFeature feature
         public static void InsertLineToFile(string filePathToInsert, string[] existingFileLines, string lineToInsert, int lineNumber)
         {
             string[] linestoInsert = new string[] { lineToInsert };
             InsertLinesToFile(filePathToInsert, existingFileLines, linestoInsert, lineNumber);
         }
 
-        // NewFeature feature
+
         public static void InsertLinesToFile(string filePathToInsert, string[] existingFileLines, string[] linesToInsert, int lineNumber)
         {
             IEnumerable<string> beforeInsert = existingFileLines.Take(lineNumber);

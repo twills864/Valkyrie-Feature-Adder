@@ -47,8 +47,6 @@ namespace Valkyrie_Feature_Adder
             Debug.Assert(Directory.Exists(feature.DirDestination));
             #endregion Assert
 
-            Debugger.Break();
-
             string csMetaTemplate = feature.PathTemplateCsMeta;
             string prefabTemplate = feature.PathTemplatePrefab;
             string prefabMetaTemplate = feature.PathTemplatePrefabMeta;
@@ -92,6 +90,48 @@ namespace Valkyrie_Feature_Adder
             //File.WriteAllText(destinationPath, fileContents);
         }
 
+
+        public static void CopyPrefabData2(NewFeature feature)
+        {
+            #region Assert
+            FileInfo csFileInfo = new FileInfo(feature.PathTemplateCs);
+            Debug.Assert(csFileInfo.Exists);
+            Debug.Assert(csFileInfo.Extension == ".cs");
+            Debug.Assert(Directory.Exists(feature.DirDestination));
+
+            Debug.Assert(File.Exists(feature.PathTemplateCsMeta));
+            Debug.Assert(File.Exists(feature.PathTemplatePrefab));
+            Debug.Assert(File.Exists(feature.PathTemplatePrefabMeta));
+
+            Debug.Assert(!File.Exists(feature.PathDestinationCsMeta));
+            Debug.Assert(!File.Exists(feature.PathDestinationPrefab));
+            Debug.Assert(!File.Exists(feature.PathDestinationPrefabMeta));
+            #endregion Assert
+
+            string guidCs = NewGuid();
+            string guidPrefab = NewGuid();
+            string fileId = NewFileId();
+
+            string csMetaTemplate = feature.PathTemplateCsMeta;
+            string csMetaDestination = feature.PathDestinationCsMeta;
+            string csMetaText = CsMetaContents(csMetaTemplate, guidCs);
+            File.WriteAllText(csMetaDestination, csMetaText);
+
+            string prefabTemplate = feature.PathTemplatePrefab;
+            string prefabDestination = feature.PathDestinationPrefab;
+            string prefabText = PrefabContents(prefabTemplate, guidCs, fileId);
+            File.WriteAllText(prefabDestination, prefabText);
+
+            string prefabMetaTemplate = feature.PathTemplatePrefabMeta;
+            string prefabMetaDestination = feature.PathDestinationPrefabMeta;
+            string prefabMetaText = PrefabMetaContents(prefabMetaTemplate, guidPrefab);
+            File.WriteAllText(prefabMetaDestination, prefabMetaText);
+
+            string poolPrefabPath = feature.PathObjectPoolPrefab;
+            string featureName = feature.FeatureName;
+            AppendPoolListPrefabData(poolPrefabPath, featureName, guidPrefab, fileId);
+        }
+
         private const string TagGuidCS = "#GUIDCS#";
         private const string TagGuidPrefab = "#GUIDPREFAB#";
         private const string TagFileId = "#FILEID#";
@@ -99,7 +139,8 @@ namespace Valkyrie_Feature_Adder
         private static StringBuilder StringBuilderFromFile(string path)
         {
             Debug.Assert(File.Exists(path));
-            return new StringBuilder(File.ReadAllText(path));
+            string allText = File.ReadAllText(path);
+            return new StringBuilder(allText);
         }
 
         private static string CsMetaContents(string templatePath, string guidCs)
@@ -140,9 +181,6 @@ namespace Valkyrie_Feature_Adder
 
 
 
-
-
-
         public static void AddFireStrategyToGameSceneFireStrategyManager(NewFeature feature)
         {
             string gameScenePath = UnityPaths.PathGameScene;
@@ -150,7 +188,6 @@ namespace Valkyrie_Feature_Adder
             string featureName = feature.FeatureName;
             string startTag = UnityPaths.TagGameSceneFireStrategyManagerStart;
             string endTag = UnityPaths.TagGameSceneFireStrategyManagerEnd;
-            string className = feature.ClassName;
 
             Debug.Assert(File.Exists(gameScenePath));
 
@@ -160,19 +197,6 @@ namespace Valkyrie_Feature_Adder
             string newStrategyLine = $"      {featureName}: 1";
 
             FileUtil.InsertLineToFile(gameScenePath, lines, newStrategyLine, endTagLine);
-
-            //List<string> allLines = new List<string>(lines.Length + 1);
-
-
-            //for (int i = 0; i < insertLineNumber; i++)
-            //    allLines.Add(lines[i]);
-
-            //allLines.Add(newStrategyLine);
-
-            //for (int i = insertLineNumber; i < lines.Length; i++)
-            //    allLines.Add(lines[i]);
-
-            //File.WriteAllLines(gameScenePath, allLines);
         }
     }
 }

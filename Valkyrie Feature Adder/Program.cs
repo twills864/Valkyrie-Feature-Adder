@@ -88,7 +88,7 @@ namespace Valkyrie_Feature_Adder
 
             FileUtil.CopyNewFeatureCsFile(feature);
             PrefabUtil.CopyPrefabData(feature);
-            FileUtil.AddPlayerBulletPrefabVariableToCs(feature);
+            FileUtil.AppendPrefabVariableToPoolListCs(feature);
 
             NewFeature strategy = feature.CloneAs(FeatureType.Strategy);
             AddPlayerFireStrategy(strategy);
@@ -105,12 +105,12 @@ namespace Valkyrie_Feature_Adder
             PrefabUtil.AddFireStrategyToGameSceneFireStrategyManager(feature);
         }
 
-        [Obsolete(Untested + NeedsFireStrategy + NeedsToPairUnityPrefab + NeedsRecoloringAndRebalancing)]
         public static void AddAdditionalBullet(NewFeature feature)
         {
             Console.WriteLine("AddAdditionalBullet()");
-            FileUtil.CopyNewFeatureCsFile(feature); // TemplatePaths.PathPlayerBullet, UnityPaths.DirPlayerBullet);
-            FileUtil.AddPlayerAdditionalBulletPrefabVariableToCs(feature);
+            FileUtil.CopyNewFeatureCsFile(feature);
+            PrefabUtil.CopyPrefabData(feature);
+            FileUtil.AppendPrefabVariableToPoolListCs(feature);
         }
 
         #endregion Bullet

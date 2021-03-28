@@ -86,6 +86,8 @@ namespace Valkyrie_Feature_Adder
         public const string DirPlayerBullet = DirAssets + @"Bullets\Player\";
         public const string DirEnemyBullet = DirAssets + @"Bullets\Enemy\";
 
+        public const string DirSuffixAdditional = @"Additional\";
+
         #endregion Bullet
 
         #region Enemy

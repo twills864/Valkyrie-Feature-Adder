@@ -42,7 +42,7 @@ namespace Valkyrie_Feature_Adder
 
         public string PathTemplateCsFileName { get; private set; }
 
-        public string PathDestinationCs => DirDestinationBase + PathTemplateCsFileName;
+        public string PathDestinationCs => DirDestination + PathTemplateCsFileName;
         public string PathDestinationCsMeta => TemplatePaths.GetCsMetadataPath(PathDestinationCs);
         public string PathDestinationPrefab => TemplatePaths.GetPrefabPath(PathDestinationCs);
         public string PathDestinationPrefabMeta => TemplatePaths.GetPrefabMetadataPath(PathDestinationCs);
@@ -53,7 +53,7 @@ namespace Valkyrie_Feature_Adder
         public string PathObjectPoolPrefab => TemplatePaths.GetPrefabPath(PathObjectPoolCs);
         public string PathObjectPoolPrefabMeta => TemplatePaths.GetPrefabMetadataPath(PathObjectPoolCs);
 
-        public string LastNewFeatureCsPath => DirDestinationBase + PathTemplateCsFileName;
+        public string LastNewFeatureCsPath => DirDestination + PathTemplateCsFileName;
 
         public NewFeature(string name, FeatureType type)
         {
@@ -97,6 +97,7 @@ namespace Valkyrie_Feature_Adder
                     break;
                 case Bullet.AdditionalBullet:
                     TagPrefab = UnityPaths.TagPlayerAdditionalBullets;
+                    DirDestinationSuffix = UnityPaths.DirSuffixAdditional;
                     break;
                 default:
                     throw new ArgumentException($"UNKNOWN BULLET {bullet}");
@@ -146,5 +147,16 @@ namespace Valkyrie_Feature_Adder
             FileInfo fileInfo = new FileInfo(path);
             return fileInfo.Name;
         }
+
+
+
+
+
+
+
+
+
+
+
     }
 }
