@@ -26,7 +26,7 @@ namespace Assets
 
     public abstract class PlayerFireStrategy<T>
     {
-        public abstract float GetFireSpeedRatio(in PlayerFireStrategyManager.PlayerRatio ratios);
+        protected abstract float GetFireSpeedRatio(in PlayerFireStrategyManager.PlayerRatio ratios);
         public PlayerFireStrategy(BasicBullet bullet, PlayerFireStrategyManager manager) { }
     }
 
@@ -116,7 +116,7 @@ namespace Assets
 
     public struct PlayerFireStrategyManager
     {
-        public struct PlayerRatio { public float Weapon; }
+        public struct PlayerRatio { public float Basic; }
     }
 
     public struct PowerupBalanceManager

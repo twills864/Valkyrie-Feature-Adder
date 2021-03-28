@@ -82,33 +82,27 @@ namespace Valkyrie_Feature_Adder
             }
         }
 
-        [Obsolete(Untested + NeedsFireStrategy + NeedsRecoloringAndRebalancing)]
         public static void AddBulletWithFireStrategy(NewFeature feature)
         {
             Console.WriteLine("AddBulletWithFireStrategy()");
 
-            if (false)
-            {
-
-                FileUtil.CopyNewFeatureCsFile(feature);
-                //PrefabUtil.CopyPrefabData(TemplatePaths.PathPlayerBullet, UnityPaths.DirPlayerBullet, UnityPaths.PathEnemyBulletPoolPrefab);
-                PrefabUtil.CopyPrefabData(feature);
-                FileUtil.AddPlayerBulletPrefabVariableToCs(feature);
-
-            }
+            FileUtil.CopyNewFeatureCsFile(feature);
+            PrefabUtil.CopyPrefabData(feature);
+            FileUtil.AddPlayerBulletPrefabVariableToCs(feature);
 
             NewFeature strategy = feature.CloneAs(FeatureType.Strategy);
             AddPlayerFireStrategy(strategy);
         }
 
-        [Obsolete(Untested)]
-        public static void AddPlayerFireStrategy(NewFeature feature)
+        private static void AddPlayerFireStrategy(NewFeature feature)
         {
             Console.WriteLine("AddPlayerFireStrategy()");
 
             FileUtil.CopyNewFeatureCsFile(feature);
             FileUtil.AddFireStrategyToGameManagerCs(feature);
-            FileUtil.AddCsFileToProjectCompile(feature);
+
+            FileUtil.AddFireStrategyToFireStrategyManager(feature);
+            PrefabUtil.AddFireStrategyToGameSceneFireStrategyManager(feature);
         }
 
         [Obsolete(Untested + NeedsFireStrategy + NeedsToPairUnityPrefab + NeedsRecoloringAndRebalancing)]

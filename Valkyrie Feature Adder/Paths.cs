@@ -77,8 +77,9 @@ namespace Valkyrie_Feature_Adder
         public const string DirAssets = DirProject + @"Assets\";
 
         public const string PathCsproj = DirProject + @"Assembly-CSharp.csproj";
+        public const string PathGameScene = DirAssets + @"GameScene.unity";
         public const string PathGameManagerCs = DirAssets + @"GameManager.cs";
-        public const string PathFireStrategyManager = @"BalanceManagers\FireStrategyManager.cs";
+        public const string PathFireStrategyManager = DirAssets + @"BalanceManagers\FireStrategyManager.cs";
 
         #region Bullet
 
@@ -149,6 +150,10 @@ namespace Valkyrie_Feature_Adder
         public const string TagGenericPrefabList = "#pragma warning restore 0414";
         public const string TagGameManagerInitFireStrategiesStart = "private void InitFireStrategies()";
         public const string TagGameManagerInitFireStrategiesEnd = "};";
+        public const string TagFireStrategyManagerPlayerRatioStart = "public struct PlayerRatio";
+        public const string TagFireStrategyManagerPlayerRatioEnd = "}";
+        public const string TagGameSceneFireStrategyManagerStart = "_FireStrategyManager:";
+        public const string TagGameSceneFireStrategyManagerEnd = "PowerupBalance:";
 
         #endregion Tags
 

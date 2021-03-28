@@ -17,7 +17,7 @@ namespace Assets.FireStrategies.PlayerFireStrategies
         {
         }
 
-        public override float GetFireSpeedRatio(in PlayerFireStrategyManager.PlayerRatio ratios)
-            => ratios.Weapon;
+        protected override float GetFireSpeedRatio(in PlayerFireStrategyManager.PlayerRatio ratios)
+            => ratios.Basic;
     }
 }

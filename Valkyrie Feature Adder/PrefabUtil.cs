@@ -137,5 +137,42 @@ namespace Valkyrie_Feature_Adder
 
             File.AppendAllText(poolPrefabPath, prefabToAdd);
         }
+
+
+
+
+
+
+        public static void AddFireStrategyToGameSceneFireStrategyManager(NewFeature feature)
+        {
+            string gameScenePath = UnityPaths.PathGameScene;
+
+            string featureName = feature.FeatureName;
+            string startTag = UnityPaths.TagGameSceneFireStrategyManagerStart;
+            string endTag = UnityPaths.TagGameSceneFireStrategyManagerEnd;
+            string className = feature.ClassName;
+
+            Debug.Assert(File.Exists(gameScenePath));
+
+            string[] lines = File.ReadAllLines(gameScenePath);
+            int endTagLine = FileUtil.FindEndTagLineAfterStartTagLine(startTag, endTag, lines, gameScenePath);
+
+            string newStrategyLine = $"      {featureName}: 1";
+
+            FileUtil.InsertLineToFile(gameScenePath, lines, newStrategyLine, endTagLine);
+
+            //List<string> allLines = new List<string>(lines.Length + 1);
+
+
+            //for (int i = 0; i < insertLineNumber; i++)
+            //    allLines.Add(lines[i]);
+
+            //allLines.Add(newStrategyLine);
+
+            //for (int i = insertLineNumber; i < lines.Length; i++)
+            //    allLines.Add(lines[i]);
+
+            //File.WriteAllLines(gameScenePath, allLines);
+        }
     }
 }

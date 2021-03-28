@@ -60,8 +60,8 @@ namespace Valkyrie_Feature_Adder
 
             // Assert coding style - one line of blank space
             // between last prefab and end tag.
-            string _blankLine = lines[endTagLine];
-            string _lastPrefabLine = lines[endTagLine - 1];
+            string _blankLine = lines[endTagLine + 1];
+            string _lastPrefabLine = lines[endTagLine];
             Debug.Assert(String.IsNullOrWhiteSpace(_blankLine));
             Debug.Assert(!String.IsNullOrWhiteSpace(_lastPrefabLine));
 
@@ -69,45 +69,31 @@ namespace Valkyrie_Feature_Adder
             const string Private = "        private";
 
             string variableName = $"{featureName}Prefab";
-
             string variableLine = $"{Private} {className} {variableName} = null;";
 
-            List<string> allLines = new List<string>(lines.Length + 2);
-
-            int insertLineNumber = endTagLine - 2;
-
-            for (int i = 0; i < insertLineNumber; i++)
-                allLines.Add(lines[i]);
-
-            allLines.Add(SerializeTag);
-            allLines.Add(variableLine);
-
-            for (int i = insertLineNumber; i < lines.Length; i++)
-                allLines.Add(lines[i]);
-
-            File.WriteAllLines(filePath, allLines);
-        }
-
-        private static int FindEndTagLine(string endTag, string[] lines, string filePath)
-        {
-            int endTagLine = 0;
-            bool endTagLineFound = false;
-            while (!endTagLineFound)
+            string[] linesToAdd = new string[]
             {
-                if (endTagLine == lines.Length)
-                    Debug.Fail($"End tag {endTag} was not found in file {filePath}");
+                SerializeTag,
+                variableLine
+            };
 
-                string line = lines[endTagLine];
+            int insertLineNumber = endTagLine - 1;
+            InsertLinesToFile(filePath, lines, linesToAdd, insertLineNumber);
 
-                if (line.EndsWith(endTag))
-                    endTagLineFound = true;
+            //List<string> allLines = new List<string>(lines.Length + 2);
 
-                endTagLine++;
-            }
 
-            return endTagLine;
+            //for (int i = 0; i < insertLineNumber; i++)
+            //    allLines.Add(lines[i]);
+
+            //allLines.Add(SerializeTag);
+            //allLines.Add(variableLine);
+
+            //for (int i = insertLineNumber; i < lines.Length; i++)
+            //    allLines.Add(lines[i]);
+
+            //File.WriteAllLines(filePath, allLines);
         }
-
 
         public static void AddCsFileToProjectCompile(NewFeature feature)
         {
@@ -126,19 +112,21 @@ namespace Valkyrie_Feature_Adder
 
             string compileTag = $"{CompileTagStart}{filePathTrimmed}{CompileTagEnd}";
 
-            List<string> allLines = new List<string>(lines.Length + 1);
 
-            int insertLineNumber = endTagLine - 1;
+            InsertLineToFile(UnityPaths.PathCsproj, lines, compileTag, endTagLine);
 
-            for (int i = 0; i < insertLineNumber; i++)
-                allLines.Add(lines[i]);
+            //List<string> allLines = new List<string>(lines.Length + 1);
+            //int insertLineNumber = endTagLine - 1;
 
-            allLines.Add(compileTag);
+            //for (int i = 0; i < insertLineNumber; i++)
+            //    allLines.Add(lines[i]);
 
-            for (int i = insertLineNumber; i < lines.Length; i++)
-                allLines.Add(lines[i]);
+            //allLines.Add(compileTag);
 
-            File.WriteAllLines(UnityPaths.PathCsproj, allLines);
+            //for (int i = insertLineNumber; i < lines.Length; i++)
+            //    allLines.Add(lines[i]);
+
+            //File.WriteAllLines(UnityPaths.PathCsproj, allLines);
         }
 
         private static int FindCsprojCompilationItemGroupLine(string[] lines)
@@ -163,11 +151,8 @@ namespace Valkyrie_Feature_Adder
             return endTagLine;
         }
 
-        [Obsolete(Untested + NeedsToPairUnityPrefab)]
         public static void AddPlayerBulletPrefabVariableToCs(NewFeature feature)
         {
-            //const string FilePath = UnityPaths.PathPlayerBulletPoolCs;
-            //const string EndTag = UnityPaths.TagPlayerMainCannon;
             AppendPrefabVariableToPoolListCs(feature);
         }
 
@@ -204,9 +189,6 @@ namespace Valkyrie_Feature_Adder
         }
 
 
-
-
-        [Obsolete(Untested + NeedsToCreateFireStrategyBalance)]
         public static void AddFireStrategyToGameManagerCs(NewFeature feature)
         {
             string gameManagerPath = UnityPaths.PathGameManagerCs;
@@ -223,55 +205,89 @@ namespace Valkyrie_Feature_Adder
 
             string newStrategyLine = $"                new {className}(Prefab<{featureName}Bullet>(), in _FireStrategyManager),";
 
-            List<string> allLines = new List<string>(lines.Length + 1);
+            InsertLineToFile(gameManagerPath, lines, newStrategyLine, endTagLine);
 
-            int insertLineNumber = endTagLine - 1;
+            //List<string> allLines = new List<string>(lines.Length + 1);
 
-            for (int i = 0; i < insertLineNumber; i++)
-                allLines.Add(lines[i]);
+            //int insertLineNumber = endTagLine - 1;
 
-            allLines.Add(newStrategyLine);
+            //for (int i = 0; i < insertLineNumber; i++)
+            //    allLines.Add(lines[i]);
 
-            for (int i = insertLineNumber; i < lines.Length; i++)
-                allLines.Add(lines[i]);
+            //allLines.Add(newStrategyLine);
 
-            File.WriteAllLines(gameManagerPath, allLines);
+            //for (int i = insertLineNumber; i < lines.Length; i++)
+            //    allLines.Add(lines[i]);
+
+            //File.WriteAllLines(gameManagerPath, allLines);
         }
 
-        private static int FindEndTagLineAfterStartTagLine(string startTag, string endTag, string[] lines, string filePath)
+        public static void AddFireStrategyToFireStrategyManager(NewFeature feature)
         {
-            int endTagLine = 0;
-            bool startTagLineFound = false;
+            string fireStrategyPath = UnityPaths.PathFireStrategyManager;
+            Debug.Assert(File.Exists(fireStrategyPath));
+
+            string featureName = feature.FeatureName;
+            string startTag = UnityPaths.TagFireStrategyManagerPlayerRatioStart;
+            string endTag = UnityPaths.TagFireStrategyManagerPlayerRatioEnd;
+
+            string[] lines = File.ReadAllLines(fireStrategyPath);
+            int endTagLine = FindEndTagLineAfterStartTagLine(startTag, endTag, lines, fireStrategyPath);
+
+            string newStrategyLine = $"            public float {featureName};";
+
+            InsertLineToFile(fireStrategyPath, lines, newStrategyLine, endTagLine);
+        }
+
+
+
+
+
+
+        public static int FindEndTagLine(string endTag, string[] lines, string filePath, int startLine = 0)
+        {
+            int endTagLine = startLine;
             bool endTagLineFound = false;
-
-            while (!startTagLineFound)
-            {
-                if (endTagLine == lines.Length)
-                    Debug.Fail($"Start tag {startTag} was not found in file {filePath}");
-
-                string line = lines[endTagLine];
-
-                if (line.EndsWith(startTag))
-                    startTagLineFound = true;
-
-                endTagLine++;
-            }
-
             while (!endTagLineFound)
             {
-                if (endTagLine == lines.Length)
+                if (endTagLine >= lines.Length)
                     Debug.Fail($"End tag {endTag} was not found in file {filePath}");
 
                 string line = lines[endTagLine];
 
                 if (line.EndsWith(endTag))
                     endTagLineFound = true;
-
-                endTagLine++;
+                else
+                    endTagLine++;
             }
 
             return endTagLine;
         }
 
+
+
+        public static int FindEndTagLineAfterStartTagLine(string startTag, string endTag, string[] lines, string filePath)
+        {
+            int startTagLine = FindEndTagLine(startTag, lines, filePath);
+            int endTagLine = FindEndTagLine(endTag, lines, filePath, startTagLine);
+            return endTagLine;
+        }
+
+        // NewFeature feature
+        public static void InsertLineToFile(string filePathToInsert, string[] existingFileLines, string lineToInsert, int lineNumber)
+        {
+            string[] linestoInsert = new string[] { lineToInsert };
+            InsertLinesToFile(filePathToInsert, existingFileLines, linestoInsert, lineNumber);
+        }
+
+        // NewFeature feature
+        public static void InsertLinesToFile(string filePathToInsert, string[] existingFileLines, string[] linesToInsert, int lineNumber)
+        {
+            IEnumerable<string> beforeInsert = existingFileLines.Take(lineNumber);
+            IEnumerable<string> afterInsert = existingFileLines.Skip(lineNumber);
+
+            IEnumerable<string> linesToAdd = beforeInsert.Concat(linesToInsert).Concat(afterInsert);
+            File.WriteAllLines(filePathToInsert, linesToAdd);
+        }
     }
 }
