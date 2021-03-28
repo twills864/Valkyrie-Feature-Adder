@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace Valkyrie_Feature_Adder
 {
-    public enum Feature
+    public enum FeatureType
     {
         Bullet,
         Powerup,
-        Enemy
+        Enemy,
+        Strategy
     }
 
     public enum Bullet

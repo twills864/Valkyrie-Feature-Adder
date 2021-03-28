@@ -24,7 +24,7 @@ namespace Valkyrie_Feature_Adder
         public static string GetPrefabMetadataPath(string input)
         {
             Debug.Assert(input.EndsWith(".cs"));
-            string ret = GetCsMetadataPath(input) + ".meta";
+            string ret = GetPrefabPath(input) + ".meta";
             return ret;
         }
 
@@ -45,20 +45,20 @@ namespace Valkyrie_Feature_Adder
 
         #region FireStrategies
 
-        public const string PathPlayerFireStrategy = @"FireStrategies\Player\BasicStrategy.cs";
-        public const string PathEnemyFireStrategy = @"FireStrategies\Enemy\BasicEnemyStrategy.cs";
+        public const string PathPlayerFireStrategy = DirTemplate + @"FireStrategies\Player\BasicStrategy.cs";
+        public const string PathEnemyFireStrategy = DirTemplate + @"FireStrategies\Enemy\BasicEnemyStrategy.cs";
 
         #endregion FireStrategies
 
         #region Powerup
 
-        private const string PathPowerup = DirTemplate + @"Powerups\";
-        public const string PathOnFire = PathPowerup + @"OnFire\BasicOnFirePowerup.cs";
-        public const string PathOnGetHit = PathPowerup + @"OnFire\BasicOnGetHitPowerup.cs";
-        public const string PathOnHit = PathPowerup + @"OnFire\BasicOnHitowerup.cs";
-        public const string PathOnKill = PathPowerup + @"OnFire\BasicOnKillPowerup.cs";
-        public const string PathOnLevelUp = PathPowerup + @"OnFire\BasicOnLevelUpPowerup.cs";
-        public const string PathPassive = PathPowerup + @"OnFire\BasicPassivePowerup.cs";
+        private const string DirPowerup = DirTemplate + @"Powerups\";
+        public const string PathOnFire = DirPowerup + @"OnFire\BasicOnFirePowerup.cs";
+        public const string PathOnGetHit = DirPowerup + @"OnFire\BasicOnGetHitPowerup.cs";
+        public const string PathOnHit = DirPowerup + @"OnFire\BasicOnHitowerup.cs";
+        public const string PathOnKill = DirPowerup + @"OnFire\BasicOnKillPowerup.cs";
+        public const string PathOnLevelUp = DirPowerup + @"OnFire\BasicOnLevelUpPowerup.cs";
+        public const string PathPassive = DirPowerup + @"OnFire\BasicPassivePowerup.cs";
 
         #endregion Powerup
     }
@@ -77,6 +77,8 @@ namespace Valkyrie_Feature_Adder
         public const string DirAssets = DirProject + @"Assets\";
 
         public const string PathCsproj = DirProject + @"Assembly-CSharp.csproj";
+        public const string PathGameManagerCs = DirAssets + @"GameManager.cs";
+        public const string PathFireStrategyManager = @"BalanceManagers\FireStrategyManager.cs";
 
         #region Bullet
 
@@ -100,13 +102,13 @@ namespace Valkyrie_Feature_Adder
 
         #region Powerup
 
-        private const string DirPowerup = DirAssets + @"Powerups\";
-        public const string DirOnFire = DirPowerup + @"OnFire\";
-        public const string DirOnGetHit = DirPowerup + @"OnFire\";
-        public const string DirOnHit = DirPowerup + @"OnFire\";
-        public const string DirOnKill = DirPowerup + @"OnFire\";
-        public const string DirOnLevelUp = DirPowerup + @"OnFire\";
-        public const string DirPassive = DirPowerup + @"OnFire\";
+        public const string DirPowerupBase = DirAssets + @"Powerups\";
+        public const string DirSuffixOnFire = @"OnFire\";
+        public const string DirSuffixOnGetHit = @"OnFire\";
+        public const string DirSuffixOnHit = @"OnFire\";
+        public const string DirSuffixOnKill = @"OnFire\";
+        public const string DirSuffixOnLevelUp = @"OnFire\";
+        public const string DirSuffixPassive = @"OnFire\";
 
         #endregion Powerup
 
@@ -145,6 +147,8 @@ namespace Valkyrie_Feature_Adder
         public const string TagPlayerMainCannon = "#endregion Fired Bullets";
         public const string TagPlayerAdditionalBullets = "#endregion Additional Bullets";
         public const string TagGenericPrefabList = "#pragma warning restore 0414";
+        public const string TagGameManagerInitFireStrategiesStart = "private void InitFireStrategies()";
+        public const string TagGameManagerInitFireStrategiesEnd = "};";
 
         #endregion Tags
 

@@ -30,19 +30,19 @@ namespace Valkyrie_Feature_Adder
                 "Example: Shrapnel, Shotgun, Cradle, ...";
             string featureName = EnumUtil.ReadStringFromConsole(PromptMessage);
 
-            Feature featureType = (Feature)EnumPrompt(typeof(Feature));
+            FeatureType featureType = (FeatureType)EnumPrompt(typeof(FeatureType));
 
             NewFeature newFeature = new NewFeature(featureName, featureType);
 
             switch (featureType)
             {
-                case Feature.Bullet:
+                case FeatureType.Bullet:
                     AddBullet(newFeature);
                     break;
-                case Feature.Powerup:
+                case FeatureType.Powerup:
                     AddPowerup(newFeature);
                     break;
-                case Feature.Enemy:
+                case FeatureType.Enemy:
                     AddEnemy(newFeature);
                     break;
                 default:
@@ -67,6 +67,8 @@ namespace Valkyrie_Feature_Adder
         {
             Bullet bullet = (Bullet)EnumPrompt(typeof(Bullet));
 
+            feature.InitPlayerBullet(bullet);
+
             switch (bullet)
             {
                 case Bullet.BulletWithFireStrategy:
@@ -80,23 +82,41 @@ namespace Valkyrie_Feature_Adder
             }
         }
 
-        [Obsolete(Untested + NeedsFireStrategy + NeedsToPairUnityPrefab + NeedsRecoloringAndRebalancing)]
+        [Obsolete(Untested + NeedsFireStrategy + NeedsRecoloringAndRebalancing)]
         public static void AddBulletWithFireStrategy(NewFeature feature)
         {
             Console.WriteLine("AddBulletWithFireStrategy()");
 
-            FileUtil.CopyNewFeatureCsFile(TemplatePaths.PathPlayerBullet, UnityPaths.DirPlayerBullet);
-            PrefabUtil.CopyPrefabData(TemplatePaths.PathPlayerBullet, UnityPaths.DirPlayerBullet, UnityPaths.PathEnemyBulletPoolPrefab);
-            FileUtil.AddPlayerBulletPrefabVariableToCs();
+            if (false)
+            {
+
+                FileUtil.CopyNewFeatureCsFile(feature);
+                //PrefabUtil.CopyPrefabData(TemplatePaths.PathPlayerBullet, UnityPaths.DirPlayerBullet, UnityPaths.PathEnemyBulletPoolPrefab);
+                PrefabUtil.CopyPrefabData(feature);
+                FileUtil.AddPlayerBulletPrefabVariableToCs(feature);
+
+            }
+
+            NewFeature strategy = feature.CloneAs(FeatureType.Strategy);
+            AddPlayerFireStrategy(strategy);
+        }
+
+        [Obsolete(Untested)]
+        public static void AddPlayerFireStrategy(NewFeature feature)
+        {
+            Console.WriteLine("AddPlayerFireStrategy()");
+
+            FileUtil.CopyNewFeatureCsFile(feature);
+            FileUtil.AddFireStrategyToGameManagerCs(feature);
+            FileUtil.AddCsFileToProjectCompile(feature);
         }
 
         [Obsolete(Untested + NeedsFireStrategy + NeedsToPairUnityPrefab + NeedsRecoloringAndRebalancing)]
         public static void AddAdditionalBullet(NewFeature feature)
         {
             Console.WriteLine("AddAdditionalBullet()");
-
-            FileUtil.CopyNewFeatureCsFile(TemplatePaths.PathPlayerBullet, UnityPaths.DirPlayerBullet);
-            FileUtil.AddPlayerAdditionalBulletPrefabVariableToCs();
+            FileUtil.CopyNewFeatureCsFile(feature); // TemplatePaths.PathPlayerBullet, UnityPaths.DirPlayerBullet);
+            FileUtil.AddPlayerAdditionalBulletPrefabVariableToCs(feature);
         }
 
         #endregion Bullet
@@ -106,6 +126,8 @@ namespace Valkyrie_Feature_Adder
         public static void AddPowerup(NewFeature feature)
         {
             Powerup powerup = (Powerup)EnumPrompt(typeof(Powerup));
+
+            feature.InitPowerup(powerup);
 
             switch (powerup)
             {

@@ -14,37 +14,45 @@ namespace Valkyrie_Feature_Adder
         public const string NeedsFireStrategy = "Doesn't add a matching FireStrategy class. ";
         public const string NeedsToPairUnityPrefab = "Needs to edit the GameScene.unity (or prefab, not sure which) file to automatically connect prefab inside Unity. ";
         public const string NeedsToAddEnemyBullet = "Needs to create a matching bullet for this enemy. ";
+        public const string NeedsToCreateFireStrategyBalance = "Fire strategies need an entry in PlayerFireStrategyManager.PlayerRatio. ";
 
-        public static string FeatureName => Program.FeatureName;
-        public static string ClassName => Program.ClassName;
+        //public static string LastNewFeatureCsPath { get; private set; }
 
-        public static string LastNewFeatureCsPath { get; private set; }
-
-        public static void CopyNewFeatureCsFile(string templateFilePath, string destinationDirectory)
+        public static void CopyNewFeatureCsFile(NewFeature feature)
         {
             const string TemplateName = "Basic";
+
+            string templateFilePath = feature.PathTemplateCs;
+            string destinationDirectory = feature.DirDestination;
+            string destinationPath = feature.PathDestinationCs;
+            string featureName = feature.FeatureName;
 
             FileInfo fileInfo = new FileInfo(templateFilePath);
             Debug.Assert(fileInfo.Exists);
 
             Debug.Assert(fileInfo.Extension == ".cs");
 
-            LastNewFeatureCsPath = destinationDirectory + fileInfo.Name;
+            //LastNewFeatureCsPath = destinationDirectory + fileInfo.Name;
             Debugger.Break();
 
             Debug.Assert(Directory.Exists(destinationDirectory));
-
-            string destinationPath = destinationDirectory + fileInfo.Name.Replace(TemplateName, FeatureName);
             Debug.Assert(!File.Exists(destinationPath));
 
             string fileContents = File.ReadAllText(templateFilePath);
-            fileContents = fileContents.Replace(TemplateName, FeatureName);
+            fileContents = fileContents.Replace(TemplateName, featureName);
 
             File.WriteAllText(destinationPath, fileContents);
+
+            AddCsFileToProjectCompile(feature);
         }
 
-        private static void AppendPrefabVariableToCs(string filePath, string endTag)
+        private static void AppendPrefabVariableToPoolListCs(NewFeature feature)
         {
+            string filePath = feature.PathObjectPoolCs;
+            string endTag = feature.TagPrefab;
+            string featureName = feature.FeatureName;
+            string className = feature.ClassName;
+
             Debug.Assert(File.Exists(filePath));
 
             string[] lines = File.ReadAllLines(filePath);
@@ -60,9 +68,9 @@ namespace Valkyrie_Feature_Adder
             const string SerializeTag = "        [SerializeField]";
             const string Private = "        private";
 
-            string variableName = $"{FeatureName}Prefab";
+            string variableName = $"{featureName}Prefab";
 
-            string variableLine = $"{Private} {ClassName} {variableName} = null;";
+            string variableLine = $"{Private} {className} {variableName} = null;";
 
             List<string> allLines = new List<string>(lines.Length + 2);
 
@@ -101,11 +109,14 @@ namespace Valkyrie_Feature_Adder
         }
 
 
-        private static void AddCsFileToProjectCompile(string filePath, string endTag)
+        public static void AddCsFileToProjectCompile(NewFeature feature)
         {
+            string filePath = feature.PathDestinationCs;
+            string filePathTrimmed = filePath.Replace(UnityPaths.DirProject, "");
+
             Debug.Assert(File.Exists(filePath));
-            Debug.Assert(filePath.StartsWith("Assets\\"));
-            Debug.Assert(filePath.EndsWith(".cs"));
+            Debug.Assert(filePathTrimmed.StartsWith("Assets\\"));
+            Debug.Assert(filePathTrimmed.EndsWith(".cs"));
 
             string[] lines = File.ReadAllLines(UnityPaths.PathCsproj);
             int endTagLine = FindCsprojCompilationItemGroupLine(lines);
@@ -113,7 +124,7 @@ namespace Valkyrie_Feature_Adder
             const string CompileTagStart = "    <Compile Include=\"";
             const string CompileTagEnd = "\" />";
 
-            string compileTag = $"{CompileTagStart}{filePath}{CompileTagEnd}";
+            string compileTag = $"{CompileTagStart}{filePathTrimmed}{CompileTagEnd}";
 
             List<string> allLines = new List<string>(lines.Length + 1);
 
@@ -143,7 +154,7 @@ namespace Valkyrie_Feature_Adder
 
                 string line = lines[endTagLine];
 
-                if (line.EndsWith(EndTag))
+                if (line.Contains(EndTag))
                     endTagLineFound = true;
 
                 endTagLine++;
@@ -152,44 +163,115 @@ namespace Valkyrie_Feature_Adder
             return endTagLine;
         }
 
-        [Obsolete(Untested + NeedsFireStrategy + NeedsToPairUnityPrefab)]
-        public static void AddPlayerBulletPrefabVariableToCs()
+        [Obsolete(Untested + NeedsToPairUnityPrefab)]
+        public static void AddPlayerBulletPrefabVariableToCs(NewFeature feature)
         {
-            const string FilePath = UnityPaths.PathPlayerBulletPoolCs;
-            const string EndTag = UnityPaths.TagPlayerMainCannon;
-            AppendPrefabVariableToCs(FilePath, EndTag);
+            //const string FilePath = UnityPaths.PathPlayerBulletPoolCs;
+            //const string EndTag = UnityPaths.TagPlayerMainCannon;
+            AppendPrefabVariableToPoolListCs(feature);
         }
 
         [Obsolete(Untested + NeedsToPairUnityPrefab)]
-        public static void AddPlayerAdditionalBulletPrefabVariableToCs()
+        public static void AddPlayerAdditionalBulletPrefabVariableToCs(NewFeature feature)
         {
-            const string FilePath = UnityPaths.PathPlayerBulletPoolCs;
-            const string EndTag = UnityPaths.TagPlayerAdditionalBullets;
-            AppendPrefabVariableToCs(FilePath, EndTag);
+            //const string FilePath = UnityPaths.PathPlayerBulletPoolCs;
+            //const string EndTag = UnityPaths.TagPlayerAdditionalBullets;
+            AppendPrefabVariableToPoolListCs(feature);
         }
 
         [Obsolete(Untested + NeedsToPairUnityPrefab)]
-        public static void AddEnemyBulletPrefabVariableToCs()
+        public static void AddEnemyBulletPrefabVariableToCs(NewFeature feature)
         {
-            const string FilePath = UnityPaths.PathEnemyBulletPoolCs;
-            const string EndTag = UnityPaths.TagGenericPrefabList;
-            AppendPrefabVariableToCs(FilePath, EndTag);
+            //const string FilePath = UnityPaths.PathEnemyBulletPoolCs;
+            //const string EndTag = UnityPaths.TagGenericPrefabList;
+            AppendPrefabVariableToPoolListCs(feature);
         }
 
         [Obsolete(Untested + NeedsFireStrategy + NeedsToPairUnityPrefab + NeedsToAddEnemyBullet)]
-        public static void AddEnemyPrefabVariableToCs()
+        public static void AddEnemyPrefabVariableToCs(NewFeature feature)
         {
-            const string FilePath = UnityPaths.PathEnemyPoolCs;
-            const string EndTag = UnityPaths.TagGenericPrefabList;
-            AppendPrefabVariableToCs(FilePath, EndTag);
+            //const string FilePath = UnityPaths.PathEnemyPoolCs;
+            //const string EndTag = UnityPaths.TagGenericPrefabList;
+            AppendPrefabVariableToPoolListCs(feature);
         }
 
         [Obsolete(Untested + NeedsToPairUnityPrefab)]
-        public static void AddUIElementPrefabVariableToCs()
+        public static void AddUIElementPrefabVariableToCs(NewFeature feature)
         {
-            const string FilePath = UnityPaths.PathUIElementPoolCs;
-            const string EndTag = UnityPaths.TagGenericPrefabList;
-            AppendPrefabVariableToCs(FilePath, EndTag);
+            //const string FilePath = UnityPaths.PathUIElementPoolCs;
+            //const string EndTag = UnityPaths.TagGenericPrefabList;
+            AppendPrefabVariableToPoolListCs(feature);
         }
+
+
+
+
+        [Obsolete(Untested + NeedsToCreateFireStrategyBalance)]
+        public static void AddFireStrategyToGameManagerCs(NewFeature feature)
+        {
+            string gameManagerPath = UnityPaths.PathGameManagerCs;
+
+            string featureName = feature.FeatureName;
+            string startTag = UnityPaths.TagGameManagerInitFireStrategiesStart;
+            string endTag = UnityPaths.TagGameManagerInitFireStrategiesEnd;
+            string className = feature.ClassName;
+
+            Debug.Assert(File.Exists(gameManagerPath));
+
+            string[] lines = File.ReadAllLines(gameManagerPath);
+            int endTagLine = FindEndTagLineAfterStartTagLine(startTag, endTag, lines, gameManagerPath);
+
+            string newStrategyLine = $"                new {className}(Prefab<{featureName}Bullet>(), in _FireStrategyManager),";
+
+            List<string> allLines = new List<string>(lines.Length + 1);
+
+            int insertLineNumber = endTagLine - 1;
+
+            for (int i = 0; i < insertLineNumber; i++)
+                allLines.Add(lines[i]);
+
+            allLines.Add(newStrategyLine);
+
+            for (int i = insertLineNumber; i < lines.Length; i++)
+                allLines.Add(lines[i]);
+
+            File.WriteAllLines(gameManagerPath, allLines);
+        }
+
+        private static int FindEndTagLineAfterStartTagLine(string startTag, string endTag, string[] lines, string filePath)
+        {
+            int endTagLine = 0;
+            bool startTagLineFound = false;
+            bool endTagLineFound = false;
+
+            while (!startTagLineFound)
+            {
+                if (endTagLine == lines.Length)
+                    Debug.Fail($"Start tag {startTag} was not found in file {filePath}");
+
+                string line = lines[endTagLine];
+
+                if (line.EndsWith(startTag))
+                    startTagLineFound = true;
+
+                endTagLine++;
+            }
+
+            while (!endTagLineFound)
+            {
+                if (endTagLine == lines.Length)
+                    Debug.Fail($"End tag {endTag} was not found in file {filePath}");
+
+                string line = lines[endTagLine];
+
+                if (line.EndsWith(endTag))
+                    endTagLineFound = true;
+
+                endTagLine++;
+            }
+
+            return endTagLine;
+        }
+
     }
 }
