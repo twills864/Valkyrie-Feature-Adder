@@ -34,7 +34,7 @@ namespace Assets
 
     #region Powerup
 
-    public abstract class Powerup { public abstract void Init(); }
+    public abstract class Powerup { /*public abstract void Init();*/ }
 
     public abstract class OnFirePowerup : Powerup
     {
@@ -114,6 +114,12 @@ namespace Assets
         public float Value => 0.0f;
     }
 
+    public class SumLevelValueCalculator
+    {
+        public SumLevelValueCalculator(float f1, float f2) { }
+        public float Value => 0.0f;
+    }
+
     public struct PlayerFireStrategyManager
     {
         public struct PlayerRatio { public float Basic; }
@@ -121,14 +127,15 @@ namespace Assets
 
     public struct PowerupBalanceManager
     {
-        public struct OnFireBalance { public Template Basic; }
-        public struct OnGetHitBalance { public Template Basic; }
-        public struct OnHitBalance { public Template Basic; }
-        public struct OnKillBalance { public Template Basic; }
-        public struct OnLevelUpBalance { public Template Basic; }
-        public struct PassiveBalance { public Template Basic; }
+        public struct OnFireBalance { public BasicTemplate Basic; }
+        public struct OnGetHitBalance { public BasicTemplate Basic; }
+        public struct OnHitBalance { public BasicTemplate Basic; }
+        public struct OnKillBalance { public BasicTemplate Basic; }
+        public struct OnLevelUpBalance { public BasicTemplate Basic; }
+        public struct PassiveBalance { public BasicTemplate Basic; }
 
-        public struct Template { public float Base; public float Increase; public float Max; }
+        public struct BasicTemplate { public Template Chance; public Template Power; }
+        public struct Template { public float Base; public float Increase; }
     }
 
     public class PoolManager
@@ -150,6 +157,18 @@ namespace Assets
     public static class GameConstants
     {
         public const int PrefabNumber = 0;
+    }
+
+    public class GameManager
+    {
+        public static GameManager Instance => new GameManager();
+        public void CreateFleetingText(string message, object position) { }
+    }
+
+    public class SpaceUtil
+    {
+        public static SpaceUtil WorldMap => new SpaceUtil();
+        public object Center => new object();
     }
 
     #endregion Unity

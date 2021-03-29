@@ -16,12 +16,12 @@ namespace Valkyrie_Feature_Adder
         public const string NeedsToAddEnemyBullet = "Needs to create a matching bullet for this enemy. ";
         public const string NeedsToCreateFireStrategyBalance = "Fire strategies need an entry in PlayerFireStrategyManager.PlayerRatio. ";
 
+        public const string TemplateName = "Basic";
+
         //public static string LastNewFeatureCsPath { get; private set; }
 
         public static void CopyNewFeatureCsFile(NewFeature feature)
         {
-            const string TemplateName = "Basic";
-
             string templateFilePath = feature.PathTemplateCs;
             string destinationDirectory = feature.DirDestination;
             string destinationPath = feature.PathDestinationCs;
@@ -198,10 +198,89 @@ namespace Valkyrie_Feature_Adder
             InsertLineToFile(fireStrategyPath, lines, newStrategyLine, endTagLine);
         }
 
+        [Obsolete(Untested)]
+        public static void AddPowerupToPowerupManager(NewFeature feature)
+        {
+            string powerupBalancePath = UnityPaths.PathPowerupBalanceManager;
+            Debug.Assert(File.Exists(powerupBalancePath));
+
+            string featureName = feature.FeatureName;
+
+            string baseBalanceStartTag = BaseBalanceStartTag(feature);
+            string baseBalanceEndTag = UnityPaths.TagPowerupBalanceManagerVariablesEnd;
+
+            string[] lines = File.ReadAllLines(powerupBalancePath);
+            int baseBalanceEndTagLine = FindEndTagLineAfterStartTagLine(baseBalanceStartTag, baseBalanceEndTag, lines, powerupBalancePath);
+
+            #region Assert
+            // Assert coding style - one line of blank space
+            // between last balance and end tag.
+            string _blankLine = lines[baseBalanceEndTagLine - 1];
+            string _lastBalance = lines[baseBalanceEndTagLine - 2];
+            Debug.Assert(String.IsNullOrWhiteSpace(_blankLine));
+            Debug.Assert(!String.IsNullOrWhiteSpace(_lastBalance));
+            #endregion Assert
+
+            int variableLineNumber = baseBalanceEndTagLine - 1;
+            string variableLine = $"            public {featureName}Balance {featureName};";
+
+            InsertLineToFile(powerupBalancePath, lines, variableLine, variableLineNumber);
+
+            AddPowerupManagerStructLines(feature, baseBalanceEndTagLine);
+        }
+
+        private static void AddPowerupManagerStructLines(NewFeature feature, int baseBalanceEndTagLine)
+        {
+            string powerupBalancePath = UnityPaths.PathPowerupBalanceManager;
+
+            string featureName = feature.FeatureName;
+            string balanceStructEndLine = UnityPaths.TagPowerupBalanceManagerBalanceStructEnd;
+
+            string[] lines = File.ReadAllLines(powerupBalancePath);
+            int endOfStructLine = FindNextEquivalentLine(balanceStructEndLine, lines, powerupBalancePath, baseBalanceEndTagLine);
+
+            string powerupBalanceStructTemplatePath = TemplatePaths.PathPowerupBalanceStructTemplate;
+            Debug.Assert(File.Exists(powerupBalanceStructTemplatePath));
+            string[] structLines = File.ReadAllLines(powerupBalanceStructTemplatePath);
+
+            for (int i = 0; i < structLines.Length; i++)
+                structLines[i] = structLines[i].Replace(TemplateName, featureName);
+
+            InsertLinesToFile(powerupBalancePath, lines, structLines, endOfStructLine);
+        }
 
 
+        // Example: "public struct OnFireBalance";
+        private static string BaseBalanceStartTag(NewFeature feature)
+        {
+            string tagStart = UnityPaths.TagPowerupBalanceManagerSubTypeStart;
+            string tagEnd = UnityPaths.TagPowerupBalanceManagerSubTypeEnd;
+            string subType = feature.SubTypeName;
+
+            string ret = $"{tagStart}{subType}{tagEnd}";
+            return ret;
+        }
 
 
+        public static int FindNextEquivalentLine(string lineToFind, string[] lines, string filePath, int startLine)
+        {
+            bool lineFound = false;
+            int currentLineNumber = startLine;
+            while (!lineFound)
+            {
+                if (currentLineNumber >= lines.Length)
+                    Debug.Fail($"Line {lineToFind} was not found in file {filePath}");
+
+                string line = lines[currentLineNumber];
+
+                if (line == lineToFind)
+                    lineFound = true;
+                else
+                    currentLineNumber++;
+            }
+
+            return currentLineNumber;
+        }
 
         public static int FindEndTagLine(string endTag, string[] lines, string filePath, int startLine = 0)
         {

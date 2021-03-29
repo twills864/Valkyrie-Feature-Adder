@@ -52,13 +52,15 @@ namespace Valkyrie_Feature_Adder
 
         #region Powerup
 
-        private const string DirPowerup = DirTemplate + @"Powerups\";
-        public const string PathOnFire = DirPowerup + @"OnFire\BasicOnFirePowerup.cs";
-        public const string PathOnGetHit = DirPowerup + @"OnFire\BasicOnGetHitPowerup.cs";
-        public const string PathOnHit = DirPowerup + @"OnFire\BasicOnHitowerup.cs";
-        public const string PathOnKill = DirPowerup + @"OnFire\BasicOnKillPowerup.cs";
-        public const string PathOnLevelUp = DirPowerup + @"OnFire\BasicOnLevelUpPowerup.cs";
-        public const string PathPassive = DirPowerup + @"OnFire\BasicPassivePowerup.cs";
+        public const string DirPowerup = DirTemplate + @"Powerups\";
+        //public const string PathOnFire = DirPowerup + @"OnFire\BasicOnFirePowerup.cs";
+        //public const string PathOnGetHit = DirPowerup + @"OnFire\BasicOnGetHitPowerup.cs";
+        //public const string PathOnHit = DirPowerup + @"OnFire\BasicOnHitowerup.cs";
+        //public const string PathOnKill = DirPowerup + @"OnFire\BasicOnKillPowerup.cs";
+        //public const string PathOnLevelUp = DirPowerup + @"OnFire\BasicOnLevelUpPowerup.cs";
+        //public const string PathPassive = DirPowerup + @"OnFire\BasicPassivePowerup.cs";
+
+        public const string PathPowerupBalanceStructTemplate = DirPowerup + @"PowerupBalanceManagerTemplate.txt";
 
         #endregion Powerup
     }
@@ -106,12 +108,14 @@ namespace Valkyrie_Feature_Adder
         #region Powerup
 
         public const string DirPowerupBase = DirAssets + @"Powerups\";
-        public const string DirSuffixOnFire = @"OnFire\";
-        public const string DirSuffixOnGetHit = @"OnFire\";
-        public const string DirSuffixOnHit = @"OnFire\";
-        public const string DirSuffixOnKill = @"OnFire\";
-        public const string DirSuffixOnLevelUp = @"OnFire\";
-        public const string DirSuffixPassive = @"OnFire\";
+        //public const string DirSuffixOnFire = @"OnFire\";
+        //public const string DirSuffixOnGetHit = @"OnFire\";
+        //public const string DirSuffixOnHit = @"OnFire\";
+        //public const string DirSuffixOnKill = @"OnFire\";
+        //public const string DirSuffixOnLevelUp = @"OnFire\";
+        //public const string DirSuffixPassive = @"OnFire\";
+
+        public const string PathPowerupBalanceManager = DirPowerupBase + @"PowerupBalanceManager.cs";
 
         #endregion Powerup
 
@@ -156,6 +160,16 @@ namespace Valkyrie_Feature_Adder
         public const string TagFireStrategyManagerPlayerRatioEnd = "}";
         public const string TagGameSceneFireStrategyManagerStart = "_FireStrategyManager:";
         public const string TagGameSceneFireStrategyManagerEnd = "PowerupBalance:";
+
+        #region PowerupBalanceManager
+
+        public const string TagPowerupBalanceManagerVariablesEnd = "[Serializable]";
+        public const string TagPowerupBalanceManagerBalanceStructEnd = "        }";
+
+        public const string TagPowerupBalanceManagerSubTypeStart = "public struct ";
+        public const string TagPowerupBalanceManagerSubTypeEnd = "Balance";
+
+        #endregion PowerupBalanceManager
 
         #endregion Tags
 

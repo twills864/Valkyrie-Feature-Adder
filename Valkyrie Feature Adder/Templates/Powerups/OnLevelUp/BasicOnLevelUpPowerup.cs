@@ -13,28 +13,28 @@ namespace Assets.Powerups
     ///
     /// </summary>
     /// <inheritdoc/>
-    public class BasicOnKillPowerup : OnKillPowerup
+    public class BasicOnLevelUpPowerup : OnLevelUpPowerup
     {
-        protected override void InitBalance(in PowerupBalanceManager.OnKillBalance balance)
-        {
-            float baseValue = balance.Basic.Base;
-            float exponentBase = balance.Basic.Increase;
-            float maxValue = balance.Basic.Max;
+        private float Chance => ChanceCalculator.Value;
+        private SumLevelValueCalculator ChanceCalculator { get; set; }
 
-            ChanceModifierCalculator = new AsymptoteRatioLevelValueCalculator(baseValue, exponentBase, maxValue);
+        private float PowerValue => PowerCalculator.Value;
+        private SumLevelValueCalculator PowerCalculator { get; set; }
+
+        protected override void InitBalance(in PowerupBalanceManager.OnLevelUpBalance balance)
+        {
+            float chanceBase = balance.Basic.Chance.Base;
+            float chanceIncrease = balance.Basic.Chance.Increase;
+            ChanceCalculator = new SumLevelValueCalculator(chanceBase, chanceIncrease);
+
+            float powerBase = balance.Basic.Power.Base;
+            float powerIncrease = balance.Basic.Power.Increase;
+            PowerCalculator = new SumLevelValueCalculator(powerBase, powerIncrease);
         }
 
-        private float ChanceModifier => ChanceModifierCalculator.Value;
-        private AsymptoteRatioLevelValueCalculator ChanceModifierCalculator { get; set; }
-
-        public override void Init()
+        public override void OnLevelUp()
         {
-
-        }
-
-        public override void OnKill(Enemy enemy, PlayerBullet bullet)
-        {
-
+            GameManager.Instance.CreateFleetingText("[OnLevelUp] Basic", SpaceUtil.WorldMap.Center);
         }
     }
 }

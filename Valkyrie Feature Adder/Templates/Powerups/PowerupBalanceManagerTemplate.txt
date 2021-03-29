@@ -1,0 +1,21 @@
+﻿
+            [Serializable]
+            public struct BasicBalance
+            {
+                public ChanceBalance Chance;
+                public PowerBalance Power;
+
+                [Serializable]
+                public struct ChanceBalance
+                {
+                    public float Base;
+                    public float Increase;
+                }
+
+                [Serializable]
+                public struct PowerBalance
+                {
+                    public float Base;
+                    public float Increase;
+                }
+            }

@@ -60,9 +60,10 @@
     <Compile Include="Templates\Powerups\OnFire\BasicOnFirePowerup.cs" />
     <Compile Include="Templates\Powerups\OnGetHit\BasicOnGetHitPowerup.cs" />
     <Compile Include="Templates\Powerups\OnHit\BasicOnHitPowerup.cs" />
-    <Compile Include="Templates\Powerups\OnKill\BasicOnKillPowerup.cs" />
     <Compile Include="Templates\Powerups\OnLevelUp\BasicOnLevelUpPowerup.cs" />
+    <Compile Include="Templates\Powerups\OnKill\BasicOnKillPowerup.cs" />
     <Compile Include="Templates\Powerups\Passive\BasicPassivePowerup.cs" />
+    <Content Include="Templates\Powerups\PowerupBalanceManagerTemplate.txt" />
     <Compile Include="Templates\TemplateCompileErrorFixes.cs" />
     <Compile Include="Templates\Bullets\Player\BasicBullet.cs" />
   </ItemGroup>

@@ -20,6 +20,7 @@ namespace Valkyrie_Feature_Adder
 
         public string FeatureName { get; }
         public FeatureType Type { get; }
+        public string SubTypeName { get; private set; }
 
         public string DirDestination => DirDestinationBase + DirDestinationSuffix;
         private string DirDestinationBase { get; }
@@ -54,6 +55,9 @@ namespace Valkyrie_Feature_Adder
         public string PathObjectPoolPrefabMeta => TemplatePaths.GetPrefabMetadataPath(PathObjectPoolCs);
 
         public string LastNewFeatureCsPath => DirDestination + PathTemplateCsFileName;
+
+
+        public string StartTag { get; private set; }
 
         public NewFeature(string name, FeatureType type)
         {
@@ -107,29 +111,39 @@ namespace Valkyrie_Feature_Adder
 
         public void InitPowerup(Powerup powerup)
         {
-            switch(powerup)
-            {
-                case Powerup.OnFire:
-                    DirDestinationSuffix = UnityPaths.DirSuffixOnFire;
-                    break;
-                case Powerup.OnGetHit:
-                    DirDestinationSuffix = UnityPaths.DirSuffixOnGetHit;
-                    break;
-                case Powerup.OnHit:
-                    DirDestinationSuffix = UnityPaths.DirSuffixOnHit;
-                    break;
-                case Powerup.OnKill:
-                    DirDestinationSuffix = UnityPaths.DirSuffixOnKill;
-                    break;
-                case Powerup.OnLevelUp:
-                    DirDestinationSuffix = UnityPaths.DirSuffixOnLevelUp;
-                    break;
-                case Powerup.Passive:
-                    DirDestinationSuffix = UnityPaths.DirSuffixPassive;
-                    break;
-                default:
-                    throw new ArgumentException($"Unknown powerup {powerup}");
-            }
+            SubTypeName = powerup.ToString();
+            DirDestinationSuffix = $@"{SubTypeName}\";
+            PathTemplateCs = TemplatePaths.DirPowerup + $@"{SubTypeName}\Basic{SubTypeName}Powerup.cs";
+
+            //switch (powerup)
+            //{
+            //    case Powerup.OnFire:
+            //        DirDestinationSuffix = UnityPaths.DirSuffixOnFire;
+            //        PathTemplateCs = TemplatePaths.PathOnFire;
+            //        break;
+            //    case Powerup.OnGetHit:
+            //        DirDestinationSuffix = UnityPaths.DirSuffixOnGetHit;
+            //        PathTemplateCs = TemplatePaths.PathOnGetHit;
+            //        break;
+            //    case Powerup.OnHit:
+            //        DirDestinationSuffix = UnityPaths.DirSuffixOnHit;
+            //        PathTemplateCs = TemplatePaths.PathOnHit;
+            //        break;
+            //    case Powerup.OnKill:
+            //        DirDestinationSuffix = UnityPaths.DirSuffixOnKill;
+            //        PathTemplateCs = TemplatePaths.PathOnKill;
+            //        break;
+            //    case Powerup.OnLevelUp:
+            //        DirDestinationSuffix = UnityPaths.DirSuffixOnLevelUp;
+            //        PathTemplateCs = TemplatePaths.PathOnLevelUp;
+            //        break;
+            //    case Powerup.Passive:
+            //        DirDestinationSuffix = UnityPaths.DirSuffixPassive;
+            //        PathTemplateCs = TemplatePaths.PathPassive;
+            //        break;
+            //    default:
+            //        throw new ArgumentException($"UNKNOWN POWERUP {powerup}");
+            //}
         }
 
         public NewFeature CloneAs(FeatureType featureType)

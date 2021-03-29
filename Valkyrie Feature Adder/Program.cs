@@ -26,6 +26,10 @@ namespace Valkyrie_Feature_Adder
         {
             Console.WriteLine(DateTime.Now);
 
+            Log.WriteLine("TODO: Remove powerup type name from powerup class name.", ConsoleColor.Red);
+            Log.WriteLine("Press any key to continue...", ConsoleColor.Red);
+            Console.ReadKey(true);
+
             const string PromptMessage = "Enter feature name.\r\n" +
                 "Example: Shrapnel, Shotgun, Cradle, ...";
             string featureName = EnumUtil.ReadStringFromConsole(PromptMessage);
@@ -117,71 +121,56 @@ namespace Valkyrie_Feature_Adder
 
         #region Powerup
 
+        [Obsolete(Untested + NeedsRecoloringAndRebalancing)]
         public static void AddPowerup(NewFeature feature)
         {
             Powerup powerup = (Powerup)EnumPrompt(typeof(Powerup));
 
             feature.InitPowerup(powerup);
 
-            switch (powerup)
-            {
-                case Powerup.OnFire:
-                    AddOnFire(feature);
-                    break;
-                case Powerup.OnGetHit:
-                    AddOnGetHit(feature);
-                    break;
-                case Powerup.OnHit:
-                    AddOnHit(feature);
-                    break;
-                case Powerup.OnKill:
-                    AddOnKill(feature);
-                    break;
-                case Powerup.OnLevelUp:
-                    AddOnLevelUp(feature);
-                    break;
-                case Powerup.Passive:
-                    AddPassive(feature);
-                    break;
-                default:
-                    throw new ArgumentException($"UNKNOWN BULLET {powerup}");
-            }
+
+            FileUtil.CopyNewFeatureCsFile(feature);
+            //PrefabUtil.CopyPrefabData(feature);
+            //FileUtil.AppendPrefabVariableToPoolListCs(feature);
+
+            FileUtil.AddPowerupToPowerupManager(feature);
+            //PrefabUtil.AddFireStrategyToGameSceneFireStrategyManager(feature);
         }
 
-        [Obsolete(Untested + NeedsRecoloringAndRebalancing)]
-        public static void AddOnFire(NewFeature feature)
-        {
-            Console.WriteLine("AddOnFire");
-        }
+        //[Obsolete(Untested + NeedsRecoloringAndRebalancing)]
+        //public static void AddOnFire(NewFeature feature)
+        //{
+        //    Console.WriteLine("AddOnFire");
+        //}
 
-        [Obsolete(Untested + NeedsRecoloringAndRebalancing)]
-        public static void AddOnGetHit(NewFeature feature)
-        {
-            Console.WriteLine("AddOnGetHit");
-        }
+        //[Obsolete(Untested + NeedsRecoloringAndRebalancing)]
+        //public static void AddOnGetHit(NewFeature feature)
+        //{
+        //    Console.WriteLine("AddOnGetHit");
+        //}
 
-        public static void AddOnHit(NewFeature feature)
-        {
-            Console.WriteLine("AddOnHit");
-        }
+        //public static void AddOnHit(NewFeature feature)
+        //{
+        //    Console.WriteLine("AddOnHit");
+        //}
 
-        [Obsolete(Untested + NeedsRecoloringAndRebalancing)]
-        public static void AddOnKill(NewFeature feature)
-        {
-            Console.WriteLine("AddOnKill");
-        }
+        //[Obsolete(Untested + NeedsRecoloringAndRebalancing)]
+        //public static void AddOnKill(NewFeature feature)
+        //{
+        //    Console.WriteLine("AddOnKill");
+        //}
 
-        [Obsolete(Untested + NeedsRecoloringAndRebalancing)]
-        public static void AddOnLevelUp(NewFeature feature)
-        {
-            Console.WriteLine("AddOnLevelUp");
-        }
+        //[Obsolete(Untested + NeedsRecoloringAndRebalancing)]
+        //public static void AddOnLevelUp(NewFeature feature)
+        //{
+        //    Console.WriteLine("AddOnLevelUp");
+        //}
 
-        [Obsolete(Untested + NeedsRecoloringAndRebalancing)]
-        public static void AddPassive(NewFeature feature)
-        {
-            Console.WriteLine("AddPassive");
-        }
+        //[Obsolete(Untested + NeedsRecoloringAndRebalancing)]
+        //public static void AddPassive(NewFeature feature)
+        //{
+        //    Console.WriteLine("AddPassive");
+        //}
 
         #endregion Powerup
 

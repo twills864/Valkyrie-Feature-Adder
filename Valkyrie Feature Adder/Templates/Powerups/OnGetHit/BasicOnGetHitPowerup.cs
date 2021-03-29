@@ -15,26 +15,26 @@ namespace Assets.Powerups
     /// <inheritdoc/>
     public class BasicOnGetHitFirePowerup : OnGetHitPowerup
     {
+        private float Chance => ChanceCalculator.Value;
+        private SumLevelValueCalculator ChanceCalculator { get; set; }
+
+        private float PowerValue => PowerCalculator.Value;
+        private SumLevelValueCalculator PowerCalculator { get; set; }
+
         protected override void InitBalance(in PowerupBalanceManager.OnGetHitBalance balance)
         {
-            float baseValue = balance.Basic.Base;
-            float exponentBase = balance.Basic.Increase;
-            float maxValue = balance.Basic.Max;
+            float chanceBase = balance.Basic.Chance.Base;
+            float chanceIncrease = balance.Basic.Chance.Increase;
+            ChanceCalculator = new SumLevelValueCalculator(chanceBase, chanceIncrease);
 
-            ChanceModifierCalculator = new AsymptoteRatioLevelValueCalculator(baseValue, exponentBase, maxValue);
-        }
-
-        private float ChanceModifier => ChanceModifierCalculator.Value;
-        private AsymptoteRatioLevelValueCalculator ChanceModifierCalculator { get; set; }
-
-        public override void Init()
-        {
-
+            float powerBase = balance.Basic.Power.Base;
+            float powerIncrease = balance.Basic.Power.Increase;
+            PowerCalculator = new SumLevelValueCalculator(powerBase, powerIncrease);
         }
 
         public override void OnGetHit()
         {
-
+            GameManager.Instance.CreateFleetingText("[OnGetHit] Basic", SpaceUtil.WorldMap.Center);
         }
     }
 }
