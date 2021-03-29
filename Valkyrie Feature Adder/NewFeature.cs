@@ -10,7 +10,9 @@ namespace Valkyrie_Feature_Adder
 {
     public class NewFeature
     {
-        const string TemplateName = "Basic";
+        const string _templateName = "Basic";
+        public string TemplateNameOverride = null;
+        public string TemplateName => TemplateNameOverride ?? _templateName;
 
         #region Property Fields
         private string _pathTemplateCs;
@@ -43,7 +45,17 @@ namespace Valkyrie_Feature_Adder
 
         public string PathTemplateCsFileName { get; private set; }
 
-        public string PathDestinationCs => DirDestination + PathTemplateCsFileName;
+        public string PathDestinationCs
+        {
+            get
+            {
+                string ret = DirDestination + PathTemplateCsFileName;
+                if (Type == FeatureType.Powerup)
+                    ret = ret.Replace($"{SubTypeName}Powerup.cs", "Powerup.cs");
+
+                return ret;
+            }
+        }
         public string PathDestinationCsMeta => TemplatePaths.GetCsMetadataPath(PathDestinationCs);
         public string PathDestinationPrefab => TemplatePaths.GetPrefabPath(PathDestinationCs);
         public string PathDestinationPrefabMeta => TemplatePaths.GetPrefabMetadataPath(PathDestinationCs);
@@ -112,6 +124,7 @@ namespace Valkyrie_Feature_Adder
         public void InitPowerup(Powerup powerup)
         {
             SubTypeName = powerup.ToString();
+            TemplateNameOverride = $"Basic{SubTypeName}";
             DirDestinationSuffix = $@"{SubTypeName}\";
             PathTemplateCs = TemplatePaths.DirPowerup + $@"{SubTypeName}\Basic{SubTypeName}Powerup.cs";
 

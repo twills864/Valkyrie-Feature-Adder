@@ -23,18 +23,18 @@ namespace Assets.Powerups
 
         protected override void InitBalance(in PowerupBalanceManager.OnHitBalance balance)
         {
-            float chanceBase = balance.Basic.Chance.Base;
-            float chanceIncrease = balance.Basic.Chance.Increase;
+            float chanceBase = balance.BasicOnHit.Chance.Base;
+            float chanceIncrease = balance.BasicOnHit.Chance.Increase;
             ChanceCalculator = new SumLevelValueCalculator(chanceBase, chanceIncrease);
 
-            float powerBase = balance.Basic.Power.Base;
-            float powerIncrease = balance.Basic.Power.Increase;
+            float powerBase = balance.BasicOnHit.Power.Base;
+            float powerIncrease = balance.BasicOnHit.Power.Increase;
             PowerCalculator = new SumLevelValueCalculator(powerBase, powerIncrease);
         }
 
         public override void OnHit(Enemy enemy, PlayerBullet bullet)
         {
-            GameManager.Instance.CreateFleetingText("[OnHit] Basic", SpaceUtil.WorldMap.Center);
+            GameManager.Instance.CreateFleetingText("[OnHit] BasicOnHit", SpaceUtil.WorldMap.Center);
         }
     }
 }

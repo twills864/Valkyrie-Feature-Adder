@@ -26,6 +26,7 @@ namespace Valkyrie_Feature_Adder
             string destinationDirectory = feature.DirDestination;
             string destinationPath = feature.PathDestinationCs;
             string featureName = feature.FeatureName;
+            string templateName = feature.TemplateName;
 
             #region Assert
             FileInfo fileInfo = new FileInfo(templateFilePath);
@@ -36,7 +37,7 @@ namespace Valkyrie_Feature_Adder
             #endregion Assert
 
             string fileContents = File.ReadAllText(templateFilePath);
-            fileContents = fileContents.Replace(TemplateName, featureName);
+            fileContents = fileContents.Replace(templateName, featureName);
 
             File.WriteAllText(destinationPath, fileContents);
 

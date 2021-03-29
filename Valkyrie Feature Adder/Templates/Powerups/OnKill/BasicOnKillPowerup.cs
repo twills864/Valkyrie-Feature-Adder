@@ -23,18 +23,18 @@ namespace Assets.Powerups
 
         protected override void InitBalance(in PowerupBalanceManager.OnKillBalance balance)
         {
-            float chanceBase = balance.Basic.Chance.Base;
-            float chanceIncrease = balance.Basic.Chance.Increase;
+            float chanceBase = balance.BasicOnKill.Chance.Base;
+            float chanceIncrease = balance.BasicOnKill.Chance.Increase;
             ChanceCalculator = new SumLevelValueCalculator(chanceBase, chanceIncrease);
 
-            float powerBase = balance.Basic.Power.Base;
-            float powerIncrease = balance.Basic.Power.Increase;
+            float powerBase = balance.BasicOnKill.Power.Base;
+            float powerIncrease = balance.BasicOnKill.Power.Increase;
             PowerCalculator = new SumLevelValueCalculator(powerBase, powerIncrease);
         }
 
         public override void OnKill(Enemy enemy, PlayerBullet bullet)
         {
-            GameManager.Instance.CreateFleetingText("[OnKill] Basic", SpaceUtil.WorldMap.Center);
+            GameManager.Instance.CreateFleetingText("[OnKill] BasicOnKill", SpaceUtil.WorldMap.Center);
         }
     }
 }

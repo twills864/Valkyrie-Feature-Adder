@@ -23,18 +23,18 @@ namespace Assets.Powerups
 
         protected override void InitBalance(in PowerupBalanceManager.OnLevelUpBalance balance)
         {
-            float chanceBase = balance.Basic.Chance.Base;
-            float chanceIncrease = balance.Basic.Chance.Increase;
+            float chanceBase = balance.BasicOnLevelUp.Chance.Base;
+            float chanceIncrease = balance.BasicOnLevelUp.Chance.Increase;
             ChanceCalculator = new SumLevelValueCalculator(chanceBase, chanceIncrease);
 
-            float powerBase = balance.Basic.Power.Base;
-            float powerIncrease = balance.Basic.Power.Increase;
+            float powerBase = balance.BasicOnLevelUp.Power.Base;
+            float powerIncrease = balance.BasicOnLevelUp.Power.Increase;
             PowerCalculator = new SumLevelValueCalculator(powerBase, powerIncrease);
         }
 
         public override void OnLevelUp()
         {
-            GameManager.Instance.CreateFleetingText("[OnLevelUp] Basic", SpaceUtil.WorldMap.Center);
+            GameManager.Instance.CreateFleetingText("[OnLevelUp] BasicOnLevelUp", SpaceUtil.WorldMap.Center);
         }
     }
 }

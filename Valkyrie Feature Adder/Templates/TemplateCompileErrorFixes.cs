@@ -127,12 +127,12 @@ namespace Assets
 
     public struct PowerupBalanceManager
     {
-        public struct OnFireBalance { public BasicTemplate Basic; }
-        public struct OnGetHitBalance { public BasicTemplate Basic; }
-        public struct OnHitBalance { public BasicTemplate Basic; }
-        public struct OnKillBalance { public BasicTemplate Basic; }
-        public struct OnLevelUpBalance { public BasicTemplate Basic; }
-        public struct PassiveBalance { public BasicTemplate Basic; }
+        public struct OnFireBalance { public BasicTemplate BasicOnFire; }
+        public struct OnGetHitBalance { public BasicTemplate BasicOnGetHit; }
+        public struct OnHitBalance { public BasicTemplate BasicOnHit; }
+        public struct OnKillBalance { public BasicTemplate BasicOnKill; }
+        public struct OnLevelUpBalance { public BasicTemplate BasicOnLevelUp; }
+        public struct PassiveBalance { public BasicTemplate BasicPassive; }
 
         public struct BasicTemplate { public Template Chance; public Template Power; }
         public struct Template { public float Base; public float Increase; }

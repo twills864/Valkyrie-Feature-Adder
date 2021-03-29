@@ -23,18 +23,18 @@ namespace Assets.Powerups
 
         protected override void InitBalance(in PowerupBalanceManager.OnFireBalance balance)
         {
-            float chanceBase = balance.Basic.Chance.Base;
-            float chanceIncrease = balance.Basic.Chance.Increase;
+            float chanceBase = balance.BasicOnFire.Chance.Base;
+            float chanceIncrease = balance.BasicOnFire.Chance.Increase;
             ChanceCalculator = new SumLevelValueCalculator(chanceBase, chanceIncrease);
 
-            float powerBase = balance.Basic.Power.Base;
-            float powerIncrease = balance.Basic.Power.Increase;
+            float powerBase = balance.BasicOnFire.Power.Base;
+            float powerIncrease = balance.BasicOnFire.Power.Increase;
             PowerCalculator = new SumLevelValueCalculator(powerBase, powerIncrease);
         }
 
         public override void OnFire(Vector3 position, PlayerBullet[] bullets)
         {
-            GameManager.Instance.CreateFleetingText("[OnFire] Basic", SpaceUtil.WorldMap.Center);
+            GameManager.Instance.CreateFleetingText("[OnFire] BasicOnFire", SpaceUtil.WorldMap.Center);
         }
     }
 }

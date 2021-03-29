@@ -26,31 +26,33 @@ namespace Valkyrie_Feature_Adder
         {
             Console.WriteLine(DateTime.Now);
 
-            Log.WriteLine("TODO: Remove powerup type name from powerup class name.", ConsoleColor.Red);
-            Log.WriteLine("Press any key to continue...", ConsoleColor.Red);
-            Console.ReadKey(true);
-
             const string PromptMessage = "Enter feature name.\r\n" +
                 "Example: Shrapnel, Shotgun, Cradle, ...";
+
+            while (true)
+            {
             string featureName = EnumUtil.ReadStringFromConsole(PromptMessage);
 
-            FeatureType featureType = (FeatureType)EnumPrompt(typeof(FeatureType));
 
-            NewFeature newFeature = new NewFeature(featureName, featureType);
+                FeatureType featureType = (FeatureType)EnumPrompt(typeof(FeatureType));
 
-            switch (featureType)
-            {
-                case FeatureType.Bullet:
-                    AddBullet(newFeature);
-                    break;
-                case FeatureType.Powerup:
-                    AddPowerup(newFeature);
-                    break;
-                case FeatureType.Enemy:
-                    AddEnemy(newFeature);
-                    break;
-                default:
-                    throw new ArgumentException($"UNKNOWN FEATURE {featureType}");
+                NewFeature newFeature = new NewFeature(featureName, featureType);
+
+
+                switch (featureType)
+                {
+                    case FeatureType.Bullet:
+                        AddBullet(newFeature);
+                        break;
+                    case FeatureType.Powerup:
+                        AddPowerup(newFeature);
+                        break;
+                    case FeatureType.Enemy:
+                        AddEnemy(newFeature);
+                        break;
+                    default:
+                        throw new ArgumentException($"UNKNOWN FEATURE {featureType}");
+                }
             }
 
             Log.Write("\r\nPress the any key to continue...", ConsoleColor.White);
@@ -121,7 +123,7 @@ namespace Valkyrie_Feature_Adder
 
         #region Powerup
 
-        [Obsolete(Untested + NeedsRecoloringAndRebalancing)]
+        [Obsolete(Untested)]
         public static void AddPowerup(NewFeature feature)
         {
             Powerup powerup = (Powerup)EnumPrompt(typeof(Powerup));
