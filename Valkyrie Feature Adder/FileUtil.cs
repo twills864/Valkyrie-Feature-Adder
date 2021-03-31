@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Valkyrie_Feature_Adder
 {
-    public static class FileUtil
+    public static partial class FileUtil
     {
         public const string Untested = "Untested. ";
         public const string NeedsFireStrategy = "Doesn't add a matching FireStrategy class. ";

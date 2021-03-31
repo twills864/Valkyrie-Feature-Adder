@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 
 namespace Valkyrie_Feature_Adder
 {
-    public class Program
+    public partial class Program
     {
         public const string Untested = "Untested. ";
         public const string NeedsFireStrategy = "Doesn't add a matching FireStrategy class. ";
         public const string NeedsToPairUnityPrefab = "Needs to edit the GameScene.unity (or prefab, not sure which) file to automatically connect prefab inside Unity. ";
         public const string NeedsToAddEnemyBullet = "Needs to create a matching bullet for this enemy. ";
         public const string NeedsRecoloringAndRebalancing = "Needs include entries for the ColorManager and the BalanceManager. ";
+        public const string DEPRECATED = "USE FEATUREBUILDER INSTEAD";
 
         //public static string FeatureName { get; private set; }
         //private static Feature FeatureType { get; set; }
@@ -29,34 +30,62 @@ namespace Valkyrie_Feature_Adder
             const string PromptMessage = "Enter feature name.\r\n" +
                 "Example: Shrapnel, Shotgun, Cradle, ...";
 
-            while (true)
-            {
+            //while (true)
+            //{
             string featureName = EnumUtil.ReadStringFromConsole(PromptMessage);
+            FeatureType featureType = (FeatureType)EnumPrompt(typeof(FeatureType));
 
-
-                FeatureType featureType = (FeatureType)EnumPrompt(typeof(FeatureType));
-
-                NewFeature newFeature = new NewFeature(featureName, featureType);
-
-
-                switch (featureType)
-                {
-                    case FeatureType.Bullet:
-                        AddBullet(newFeature);
-                        break;
-                    case FeatureType.Powerup:
-                        AddPowerup(newFeature);
-                        break;
-                    case FeatureType.Enemy:
-                        AddEnemy(newFeature);
-                        break;
-                    default:
-                        throw new ArgumentException($"UNKNOWN FEATURE {featureType}");
-                }
+            switch (featureType)
+            {
+                case FeatureType.Bullet:
+                    AddBullet(featureName);
+                    break;
+                case FeatureType.Powerup:
+                    AddPowerup(featureName);
+                    break;
+                //case FeatureType.Enemy:
+                //    AddEnemy(featureName);
+                //    break;
+                default:
+                    throw new ArgumentException($"UNKNOWN FEATURE {featureType}");
             }
+            //}
+
+
 
             Log.Write("\r\nPress the any key to continue...", ConsoleColor.White);
             Console.ReadKey(true);
+        }
+
+        public static void ObsoleteAddFeature()
+        {
+            const string PromptMessage = "Enter feature name.\r\n" +
+                "Example: Shrapnel, Shotgun, Cradle, ...";
+
+            //while (true)
+            //{
+            string featureName = EnumUtil.ReadStringFromConsole(PromptMessage);
+            FeatureType featureType = (FeatureType)EnumPrompt(typeof(FeatureType));
+
+            NewFeature newFeature = new NewFeature(featureName, featureType);
+
+
+            switch (featureType)
+            {
+                case FeatureType.Bullet:
+                    AddBullet(newFeature);
+                    break;
+                case FeatureType.Powerup:
+                    AddPowerup(newFeature);
+                    break;
+                case FeatureType.Enemy:
+                    AddEnemy(newFeature);
+                    break;
+                default:
+                    throw new ArgumentException($"UNKNOWN FEATURE {featureType}");
+            }
+            //}
+
         }
 
         public static int EnumPrompt(Type type)
@@ -69,6 +98,7 @@ namespace Valkyrie_Feature_Adder
 
         #region Bullet
 
+        [Obsolete(DEPRECATED)]
         public static void AddBullet(NewFeature feature)
         {
             Bullet bullet = (Bullet)EnumPrompt(typeof(Bullet));
@@ -88,6 +118,7 @@ namespace Valkyrie_Feature_Adder
             }
         }
 
+        [Obsolete(DEPRECATED)]
         public static void AddBulletWithFireStrategy(NewFeature feature)
         {
             Console.WriteLine("AddBulletWithFireStrategy()");
@@ -100,6 +131,7 @@ namespace Valkyrie_Feature_Adder
             AddPlayerFireStrategy(strategy);
         }
 
+        [Obsolete(DEPRECATED)]
         private static void AddPlayerFireStrategy(NewFeature feature)
         {
             Console.WriteLine("AddPlayerFireStrategy()");
@@ -111,6 +143,7 @@ namespace Valkyrie_Feature_Adder
             PrefabUtil.AddFireStrategyToGameSceneFireStrategyManager(feature);
         }
 
+        [Obsolete(DEPRECATED)]
         public static void AddAdditionalBullet(NewFeature feature)
         {
             Console.WriteLine("AddAdditionalBullet()");
@@ -123,7 +156,7 @@ namespace Valkyrie_Feature_Adder
 
         #region Powerup
 
-        [Obsolete(Untested)]
+        [Obsolete(DEPRECATED)]
         public static void AddPowerup(NewFeature feature)
         {
             Powerup powerup = (Powerup)EnumPrompt(typeof(Powerup));
@@ -178,6 +211,7 @@ namespace Valkyrie_Feature_Adder
 
         #region Enemy
 
+        [Obsolete(DEPRECATED)]
         public static void AddEnemy(NewFeature feature)
         {
             Enemy enemy = (Enemy)EnumPrompt(typeof(Enemy));
@@ -198,19 +232,22 @@ namespace Valkyrie_Feature_Adder
             }
         }
 
-        [Obsolete(Untested + NeedsFireStrategy + NeedsToPairUnityPrefab + NeedsToAddEnemyBullet + NeedsRecoloringAndRebalancing)]
+        //[Obsolete(Untested + NeedsFireStrategy + NeedsToPairUnityPrefab + NeedsToAddEnemyBullet + NeedsRecoloringAndRebalancing)]
+        [Obsolete(DEPRECATED)]
         public static void AddLoopingVariantFireStrategyEnemy(NewFeature feature)
         {
             Console.WriteLine("AddLoopingVariantFireStrategyEnemy");
         }
 
-        [Obsolete(Untested + NeedsFireStrategy + NeedsToPairUnityPrefab + NeedsToAddEnemyBullet + NeedsRecoloringAndRebalancing)]
+        //[Obsolete(Untested + NeedsFireStrategy + NeedsToPairUnityPrefab + NeedsToAddEnemyBullet + NeedsRecoloringAndRebalancing)]
+        [Obsolete(DEPRECATED)]
         public static void AddCustomFireStrategyEnemy(NewFeature feature)
         {
             Console.WriteLine("AddCustomFireStrategyEnemy");
         }
 
-        [Obsolete(Untested + NeedsToPairUnityPrefab + NeedsToAddEnemyBullet + NeedsRecoloringAndRebalancing)]
+        //[Obsolete(Untested + NeedsToPairUnityPrefab + NeedsToAddEnemyBullet + NeedsRecoloringAndRebalancing)]
+        [Obsolete(DEPRECATED)]
         public static void AddNoFireStrategyenemy(NewFeature feature)
         {
             Console.WriteLine("AddNoFireStrategyenemy");

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Valkyrie_Feature_Adder
 {
+    [Obsolete("Please make FeatureBuilder work instead.")]
     public class NewFeature
     {
         const string _templateName = "Basic";

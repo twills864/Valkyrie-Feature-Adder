@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Valkyrie_Feature_Adder
 {
-    public static class TemplatePaths
+    public static partial class TemplatePaths
     {
         public static string GetPrefabPath(string input)
         {
