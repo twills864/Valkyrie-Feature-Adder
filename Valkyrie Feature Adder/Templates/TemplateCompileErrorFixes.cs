@@ -79,10 +79,20 @@ namespace Assets
 
     public abstract class Enemy
     {
+        //protected abstract EnemyFireStrategy InitialFireStrategy();
+
+        protected abstract void OnEnemyInit();
+        //protected abstract void OnFireStrategyEnemyActivate();
+        protected abstract void OnEnemySpawn();
+        //protected abstract void OnFireStrategyEnemyFrame(float deltaTime, float realDeltaTime);
+    }
+
+    public abstract class FireStrategyEnemy : Enemy
+    {
         protected float FireSpeed;
         protected float FireSpeedVariance;
 
-        protected abstract EnemyFireStrategy InitialFireStrategy();
+        public LoopingFrameTimer FireTimer;
     }
 
     public class VariantLoopingEnemyFireStrategy<T> : EnemyFireStrategy<T>
@@ -143,6 +153,10 @@ namespace Assets
         public static PoolManager Instance => new PoolManager();
         public PoolManager EnemyBulletPool => this;
         public BasicEnemyBullet GetPrefab<T>() => new BasicEnemyBullet();
+    }
+    public class LoopingFrameTimer
+    {
+        public static LoopingFrameTimer Default() => new LoopingFrameTimer();
     }
 
     #endregion Valkyrie

@@ -20,11 +20,11 @@ namespace Valkyrie_Feature_Adder
 
         //public static string LastNewFeatureCsPath { get; private set; }
 
-        public static void CopyNewFeatureCsFile(NewFeature feature)
+        public static void CopyNewFeatureCsFile(FeatureBuilder feature)
         {
-            string templateFilePath = feature.PathTemplateCs;
+            string templateFilePath = feature.PathTemplate.Cs;
             string destinationDirectory = feature.DirDestination;
-            string destinationPath = feature.PathDestinationCs;
+            string destinationPath = feature.PathDestination.Cs;
             string featureName = feature.FeatureName;
             string templateName = feature.TemplateName;
 
@@ -36,7 +36,7 @@ namespace Valkyrie_Feature_Adder
             Debug.Assert(!File.Exists(destinationPath));
             #endregion Assert
 
-            string fileContents = File.ReadAllText(templateFilePath);
+            string fileContents = feature.ReadTemplateCsFileContents(); // File.ReadAllText(templateFilePath);
             fileContents = fileContents.Replace(templateName, featureName);
 
             File.WriteAllText(destinationPath, fileContents);
@@ -44,9 +44,9 @@ namespace Valkyrie_Feature_Adder
             AddCsFileToProjectCompile(feature);
         }
 
-        public static void AppendPrefabVariableToPoolListCs(NewFeature feature)
+        public static void AppendPrefabVariableToPoolListCs(FeatureBuilder feature)
         {
-            string filePath = feature.PathObjectPoolCs;
+            string filePath = feature.PathObjectPool.Cs;
             string endTag = feature.TagPrefab;
             string featureName = feature.FeatureName;
             string className = feature.ClassName;
@@ -81,9 +81,9 @@ namespace Valkyrie_Feature_Adder
             InsertLinesToFile(filePath, lines, linesToAdd, insertLineNumber);
         }
 
-        public static void AddCsFileToProjectCompile(NewFeature feature)
+        public static void AddCsFileToProjectCompile(FeatureBuilder feature)
         {
-            string filePath = feature.PathDestinationCs;
+            string filePath = feature.PathDestination.Cs;
             string filePathTrimmed = filePath.Replace(UnityPaths.DirProject, "");
 
             #region Assert
@@ -163,7 +163,7 @@ namespace Valkyrie_Feature_Adder
         //}
 
 
-        public static void AddFireStrategyToGameManagerCs(NewFeature feature)
+        public static void AddFireStrategyToGameManagerCs(FeatureBuilder feature)
         {
             string gameManagerPath = UnityPaths.PathGameManagerCs;
 
@@ -182,7 +182,7 @@ namespace Valkyrie_Feature_Adder
             InsertLineToFile(gameManagerPath, lines, newStrategyLine, endTagLine);
         }
 
-        public static void AddFireStrategyToFireStrategyManager(NewFeature feature)
+        public static void AddFireStrategyToFireStrategyManager(FeatureBuilder feature)
         {
             string fireStrategyPath = UnityPaths.PathFireStrategyManager;
             Debug.Assert(File.Exists(fireStrategyPath));
@@ -199,15 +199,14 @@ namespace Valkyrie_Feature_Adder
             InsertLineToFile(fireStrategyPath, lines, newStrategyLine, endTagLine);
         }
 
-        [Obsolete(Untested)]
-        public static void AddPowerupToPowerupManager(NewFeature feature)
+        public static void AddPowerupToPowerupManager(PowerupBuilder feature)
         {
             string powerupBalancePath = UnityPaths.PathPowerupBalanceManager;
             Debug.Assert(File.Exists(powerupBalancePath));
 
             string featureName = feature.FeatureName;
 
-            string baseBalanceStartTag = BaseBalanceStartTag(feature);
+            string baseBalanceStartTag = feature.BaseBalanceStartTag;
             string baseBalanceEndTag = UnityPaths.TagPowerupBalanceManagerVariablesEnd;
 
             string[] lines = File.ReadAllLines(powerupBalancePath);
@@ -230,7 +229,7 @@ namespace Valkyrie_Feature_Adder
             AddPowerupManagerStructLines(feature, baseBalanceEndTagLine);
         }
 
-        private static void AddPowerupManagerStructLines(NewFeature feature, int baseBalanceEndTagLine)
+        private static void AddPowerupManagerStructLines(PowerupBuilder feature, int baseBalanceEndTagLine)
         {
             string powerupBalancePath = UnityPaths.PathPowerupBalanceManager;
 
@@ -251,16 +250,16 @@ namespace Valkyrie_Feature_Adder
         }
 
 
-        // Example: "public struct OnFireBalance";
-        private static string BaseBalanceStartTag(NewFeature feature)
-        {
-            string tagStart = UnityPaths.TagPowerupBalanceManagerSubTypeStart;
-            string tagEnd = UnityPaths.TagPowerupBalanceManagerSubTypeEnd;
-            string subType = feature.SubTypeName;
+        //// Example: "public struct OnFireBalance";
+        //private static string BaseBalanceStartTag(NewFeature feature)
+        //{
+        //    string tagStart = UnityPaths.TagPowerupBalanceManagerSubTypeStart;
+        //    string tagEnd = UnityPaths.TagPowerupBalanceManagerSubTypeEnd;
+        //    string subType = feature.SubTypeName;
 
-            string ret = $"{tagStart}{subType}{tagEnd}";
-            return ret;
-        }
+        //    string ret = $"{tagStart}{subType}{tagEnd}";
+        //    return ret;
+        //}
 
 
         public static int FindNextEquivalentLine(string lineToFind, string[] lines, string filePath, int startLine)

@@ -43,9 +43,9 @@ namespace Valkyrie_Feature_Adder
                 case FeatureType.Powerup:
                     AddPowerup(featureName);
                     break;
-                //case FeatureType.Enemy:
-                //    AddEnemy(featureName);
-                //    break;
+                case FeatureType.Enemy:
+                    AddEnemy(featureName);
+                    break;
                 default:
                     throw new ArgumentException($"UNKNOWN FEATURE {featureType}");
             }
@@ -57,37 +57,6 @@ namespace Valkyrie_Feature_Adder
             Console.ReadKey(true);
         }
 
-        public static void ObsoleteAddFeature()
-        {
-            const string PromptMessage = "Enter feature name.\r\n" +
-                "Example: Shrapnel, Shotgun, Cradle, ...";
-
-            //while (true)
-            //{
-            string featureName = EnumUtil.ReadStringFromConsole(PromptMessage);
-            FeatureType featureType = (FeatureType)EnumPrompt(typeof(FeatureType));
-
-            NewFeature newFeature = new NewFeature(featureName, featureType);
-
-
-            switch (featureType)
-            {
-                case FeatureType.Bullet:
-                    AddBullet(newFeature);
-                    break;
-                case FeatureType.Powerup:
-                    AddPowerup(newFeature);
-                    break;
-                case FeatureType.Enemy:
-                    AddEnemy(newFeature);
-                    break;
-                default:
-                    throw new ArgumentException($"UNKNOWN FEATURE {featureType}");
-            }
-            //}
-
-        }
-
         public static int EnumPrompt(Type type)
         {
             string prompt = $"Select {type.Name} type:";
@@ -95,15 +64,13 @@ namespace Valkyrie_Feature_Adder
         }
 
 
-
         #region Bullet
 
-        [Obsolete(DEPRECATED)]
-        public static void AddBullet(NewFeature feature)
+        public static void AddBullet(string featureName)
         {
             Bullet bullet = (Bullet)EnumPrompt(typeof(Bullet));
 
-            feature.InitPlayerBullet(bullet);
+            BulletBuilder feature = new BulletBuilder(featureName, bullet);
 
             switch (bullet)
             {
@@ -118,8 +85,7 @@ namespace Valkyrie_Feature_Adder
             }
         }
 
-        [Obsolete(DEPRECATED)]
-        public static void AddBulletWithFireStrategy(NewFeature feature)
+        public static void AddBulletWithFireStrategy(BulletBuilder feature)
         {
             Console.WriteLine("AddBulletWithFireStrategy()");
 
@@ -127,12 +93,12 @@ namespace Valkyrie_Feature_Adder
             PrefabUtil.CopyPrefabData(feature);
             FileUtil.AppendPrefabVariableToPoolListCs(feature);
 
-            NewFeature strategy = feature.CloneAs(FeatureType.Strategy);
+            PlayerFireStrategyBuilder strategy = new PlayerFireStrategyBuilder(feature.FeatureName);
+            //NewFeature strategy = feature.CloneAs(FeatureType.Strategy);
             AddPlayerFireStrategy(strategy);
         }
 
-        [Obsolete(DEPRECATED)]
-        private static void AddPlayerFireStrategy(NewFeature feature)
+        private static void AddPlayerFireStrategy(PlayerFireStrategyBuilder feature)
         {
             Console.WriteLine("AddPlayerFireStrategy()");
 
@@ -143,8 +109,8 @@ namespace Valkyrie_Feature_Adder
             PrefabUtil.AddFireStrategyToGameSceneFireStrategyManager(feature);
         }
 
-        [Obsolete(DEPRECATED)]
-        public static void AddAdditionalBullet(NewFeature feature)
+
+        public static void AddAdditionalBullet(BulletBuilder feature)
         {
             Console.WriteLine("AddAdditionalBullet()");
             FileUtil.CopyNewFeatureCsFile(feature);
@@ -156,12 +122,11 @@ namespace Valkyrie_Feature_Adder
 
         #region Powerup
 
-        [Obsolete(DEPRECATED)]
-        public static void AddPowerup(NewFeature feature)
+        public static void AddPowerup(string featureName)
         {
             Powerup powerup = (Powerup)EnumPrompt(typeof(Powerup));
 
-            feature.InitPowerup(powerup);
+            PowerupBuilder feature = new PowerupBuilder(featureName, powerup);
 
 
             FileUtil.CopyNewFeatureCsFile(feature);
@@ -211,10 +176,11 @@ namespace Valkyrie_Feature_Adder
 
         #region Enemy
 
-        [Obsolete(DEPRECATED)]
-        public static void AddEnemy(NewFeature feature)
+        public static void AddEnemy(string featureName)
         {
             Enemy enemy = (Enemy)EnumPrompt(typeof(Enemy));
+
+            EnemyBuilder feature = new EnemyBuilder(featureName, enemy);
 
             switch (enemy)
             {
@@ -233,24 +199,57 @@ namespace Valkyrie_Feature_Adder
         }
 
         //[Obsolete(Untested + NeedsFireStrategy + NeedsToPairUnityPrefab + NeedsToAddEnemyBullet + NeedsRecoloringAndRebalancing)]
-        [Obsolete(DEPRECATED)]
-        public static void AddLoopingVariantFireStrategyEnemy(NewFeature feature)
+
+        public static void AddLoopingVariantFireStrategyEnemy(EnemyBuilder feature)
         {
             Console.WriteLine("AddLoopingVariantFireStrategyEnemy");
+
+            FileUtil.CopyNewFeatureCsFile(feature);
+            PrefabUtil.CopyPrefabData(feature);
+            FileUtil.AppendPrefabVariableToPoolListCs(feature);
+
+            EnemyBulletBuilder bullet = new EnemyBulletBuilder(feature.FeatureName);
+            AddEnemyBullet(bullet);
+
+            EnemyFireStrategyBuilder strategy = new EnemyFireStrategyBuilder(feature.FeatureName);
+            AddEnemyFireStrategy(strategy);
+        }
+
+
+        public static void AddEnemyBullet(EnemyBulletBuilder feature)
+        {
+            Console.WriteLine("AddBulletWithFireStrategy()");
+
+            FileUtil.CopyNewFeatureCsFile(feature);
+            PrefabUtil.CopyPrefabData(feature);
+            FileUtil.AppendPrefabVariableToPoolListCs(feature);
+        }
+
+        private static void AddEnemyFireStrategy(EnemyFireStrategyBuilder feature)
+        {
+            Console.WriteLine("AddEnemyFireStrategy()");
+
+            FileUtil.CopyNewFeatureCsFile(feature);
         }
 
         //[Obsolete(Untested + NeedsFireStrategy + NeedsToPairUnityPrefab + NeedsToAddEnemyBullet + NeedsRecoloringAndRebalancing)]
-        [Obsolete(DEPRECATED)]
-        public static void AddCustomFireStrategyEnemy(NewFeature feature)
+
+        public static void AddCustomFireStrategyEnemy(EnemyBuilder feature)
         {
-            Console.WriteLine("AddCustomFireStrategyEnemy");
+            Console.WriteLine("AddCustomFireStrategyEnemy (May be handled in subclass - just try looping variant)");
+
+            AddLoopingVariantFireStrategyEnemy(feature);
         }
 
         //[Obsolete(Untested + NeedsToPairUnityPrefab + NeedsToAddEnemyBullet + NeedsRecoloringAndRebalancing)]
-        [Obsolete(DEPRECATED)]
-        public static void AddNoFireStrategyenemy(NewFeature feature)
+
+        public static void AddNoFireStrategyenemy(EnemyBuilder feature)
         {
             Console.WriteLine("AddNoFireStrategyenemy");
+
+            FileUtil.CopyNewFeatureCsFile(feature);
+            PrefabUtil.CopyPrefabData(feature);
+            FileUtil.AppendPrefabVariableToPoolListCs(feature);
         }
 
         #endregion Enemy

@@ -37,9 +37,9 @@ namespace Valkyrie_Feature_Adder
         }
         public static string NewGuid() => Guid.NewGuid().ToString("N");
 
-        public static void CopyPrefabData(NewFeature feature)
+        public static void CopyPrefabData(FeatureBuilder feature)
         {
-            FileInfo csFileInfo = new FileInfo(feature.PathTemplateCs);
+            FileInfo csFileInfo = new FileInfo(feature.PathTemplate.Cs);
 
             #region Assert
             Debug.Assert(csFileInfo.Exists);
@@ -47,9 +47,9 @@ namespace Valkyrie_Feature_Adder
             Debug.Assert(Directory.Exists(feature.DirDestination));
             #endregion Assert
 
-            string csMetaTemplate = feature.PathTemplateCsMeta;
-            string prefabTemplate = feature.PathTemplatePrefab;
-            string prefabMetaTemplate = feature.PathTemplatePrefabMeta;
+            string csMetaTemplate = feature.PathTemplate.CsMeta;
+            string prefabTemplate = feature.PathTemplate.Prefab;
+            string prefabMetaTemplate = feature.PathTemplate.PrefabMeta;
 
             #region Assert
             Debug.Assert(File.Exists(csMetaTemplate));
@@ -57,9 +57,9 @@ namespace Valkyrie_Feature_Adder
             Debug.Assert(File.Exists(prefabMetaTemplate));
             #endregion Assert
 
-            string csMetaDestination = feature.PathDestinationCsMeta;
-            string prefabDestination = feature.PathDestinationPrefab;
-            string prefabMetaDestination = feature.PathDestinationPrefabMeta;
+            string csMetaDestination = feature.PathDestination.CsMeta;
+            string prefabDestination = feature.PathDestination.Prefab;
+            string prefabMetaDestination = feature.PathDestination.PrefabMeta;
 
             #region Assert
             Debug.Assert(!File.Exists(csMetaDestination));
@@ -80,7 +80,7 @@ namespace Valkyrie_Feature_Adder
             string prefabMetaText = PrefabMetaContents(prefabMetaTemplate, guidPrefab);
             File.WriteAllText(prefabMetaDestination, prefabMetaText);
 
-            string poolPrefabPath = feature.PathObjectPoolPrefab;
+            string poolPrefabPath = feature.PathObjectPool.Prefab;
             string featureName = feature.FeatureName;
             AppendPoolListPrefabData(poolPrefabPath, featureName, guidPrefab, fileId);
 
@@ -91,46 +91,46 @@ namespace Valkyrie_Feature_Adder
         }
 
 
-        public static void CopyPrefabData2(NewFeature feature)
-        {
-            #region Assert
-            FileInfo csFileInfo = new FileInfo(feature.PathTemplateCs);
-            Debug.Assert(csFileInfo.Exists);
-            Debug.Assert(csFileInfo.Extension == ".cs");
-            Debug.Assert(Directory.Exists(feature.DirDestination));
+        //public static void CopyPrefabData2(NewFeature feature)
+        //{
+        //    #region Assert
+        //    FileInfo csFileInfo = new FileInfo(feature.PathTemplateCs);
+        //    Debug.Assert(csFileInfo.Exists);
+        //    Debug.Assert(csFileInfo.Extension == ".cs");
+        //    Debug.Assert(Directory.Exists(feature.DirDestination));
 
-            Debug.Assert(File.Exists(feature.PathTemplateCsMeta));
-            Debug.Assert(File.Exists(feature.PathTemplatePrefab));
-            Debug.Assert(File.Exists(feature.PathTemplatePrefabMeta));
+        //    Debug.Assert(File.Exists(feature.PathTemplateCsMeta));
+        //    Debug.Assert(File.Exists(feature.PathTemplatePrefab));
+        //    Debug.Assert(File.Exists(feature.PathTemplatePrefabMeta));
 
-            Debug.Assert(!File.Exists(feature.PathDestinationCsMeta));
-            Debug.Assert(!File.Exists(feature.PathDestinationPrefab));
-            Debug.Assert(!File.Exists(feature.PathDestinationPrefabMeta));
-            #endregion Assert
+        //    Debug.Assert(!File.Exists(feature.PathDestinationCsMeta));
+        //    Debug.Assert(!File.Exists(feature.PathDestinationPrefab));
+        //    Debug.Assert(!File.Exists(feature.PathDestinationPrefabMeta));
+        //    #endregion Assert
 
-            string guidCs = NewGuid();
-            string guidPrefab = NewGuid();
-            string fileId = NewFileId();
+        //    string guidCs = NewGuid();
+        //    string guidPrefab = NewGuid();
+        //    string fileId = NewFileId();
 
-            string csMetaTemplate = feature.PathTemplateCsMeta;
-            string csMetaDestination = feature.PathDestinationCsMeta;
-            string csMetaText = CsMetaContents(csMetaTemplate, guidCs);
-            File.WriteAllText(csMetaDestination, csMetaText);
+        //    string csMetaTemplate = feature.PathTemplateCsMeta;
+        //    string csMetaDestination = feature.PathDestinationCsMeta;
+        //    string csMetaText = CsMetaContents(csMetaTemplate, guidCs);
+        //    File.WriteAllText(csMetaDestination, csMetaText);
 
-            string prefabTemplate = feature.PathTemplatePrefab;
-            string prefabDestination = feature.PathDestinationPrefab;
-            string prefabText = PrefabContents(prefabTemplate, guidCs, fileId);
-            File.WriteAllText(prefabDestination, prefabText);
+        //    string prefabTemplate = feature.PathTemplatePrefab;
+        //    string prefabDestination = feature.PathDestinationPrefab;
+        //    string prefabText = PrefabContents(prefabTemplate, guidCs, fileId);
+        //    File.WriteAllText(prefabDestination, prefabText);
 
-            string prefabMetaTemplate = feature.PathTemplatePrefabMeta;
-            string prefabMetaDestination = feature.PathDestinationPrefabMeta;
-            string prefabMetaText = PrefabMetaContents(prefabMetaTemplate, guidPrefab);
-            File.WriteAllText(prefabMetaDestination, prefabMetaText);
+        //    string prefabMetaTemplate = feature.PathTemplatePrefabMeta;
+        //    string prefabMetaDestination = feature.PathDestinationPrefabMeta;
+        //    string prefabMetaText = PrefabMetaContents(prefabMetaTemplate, guidPrefab);
+        //    File.WriteAllText(prefabMetaDestination, prefabMetaText);
 
-            string poolPrefabPath = feature.PathObjectPoolPrefab;
-            string featureName = feature.FeatureName;
-            AppendPoolListPrefabData(poolPrefabPath, featureName, guidPrefab, fileId);
-        }
+        //    string poolPrefabPath = feature.PathObjectPoolPrefab;
+        //    string featureName = feature.FeatureName;
+        //    AppendPoolListPrefabData(poolPrefabPath, featureName, guidPrefab, fileId);
+        //}
 
         private const string TagGuidCS = "#GUIDCS#";
         private const string TagGuidPrefab = "#GUIDPREFAB#";
@@ -181,7 +181,7 @@ namespace Valkyrie_Feature_Adder
 
 
 
-        public static void AddFireStrategyToGameSceneFireStrategyManager(NewFeature feature)
+        public static void AddFireStrategyToGameSceneFireStrategyManager(FeatureBuilder feature)
         {
             string gameScenePath = UnityPaths.PathGameScene;
 

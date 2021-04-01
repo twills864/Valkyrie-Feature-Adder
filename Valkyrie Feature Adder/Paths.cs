@@ -33,7 +33,7 @@ namespace Valkyrie_Feature_Adder
         #region Bullet
 
         public const string PathPlayerBullet = DirTemplate + @"Bullets\Player\BasicBullet.cs";
-        public const string PathEnemyBullet = DirTemplate + @"Bullets\Enemy\BasicBullet.cs";
+        public const string PathEnemyBullet = DirTemplate + @"Bullets\Enemy\BasicEnemyBullet.cs";
 
         #endregion Bullet
 

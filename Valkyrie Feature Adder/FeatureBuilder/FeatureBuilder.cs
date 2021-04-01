@@ -10,8 +10,6 @@ namespace Valkyrie_Feature_Adder
 {
     public abstract class FeatureBuilder
     {
-        private UnityFileSet _pathTemplate;
-
         public string FeatureName { get; }
         public abstract string Type { get; }
         public string ClassName => FeatureName + Type;
@@ -39,14 +37,8 @@ namespace Valkyrie_Feature_Adder
 
         }
 
-
         public string TagPrefab { get; protected set; }
         public UnityFileSet PathObjectPool { get; protected set; }
-
-        //public string LastNewFeatureCsPath => DirDestination + PathTemplateCsFileName;
-
-
-        //public string StartTag { get; private set; }
 
         public FeatureBuilder(string name)
         {
@@ -55,73 +47,7 @@ namespace Valkyrie_Feature_Adder
             DirDestination = InitialDirDestination;
             PathTemplate = new UnityFileSet(InitialPathTemplateCs);
             PathObjectPool = new UnityFileSet(InitialPathObjectPoolCs);
-
-            //switch (Type)
-            //{
-            //    case FeatureType.Bullet:
-            //        DirDestinationBase = UnityPaths.DirPlayerBullet;
-            //        PathTemplateCs = TemplatePaths.PathPlayerBullet;
-            //        PathObjectPoolCs = UnityPaths.PathPlayerBulletPoolCs;
-            //        break;
-            //    case FeatureType.Enemy:
-            //        DirDestinationBase = UnityPaths.DirEnemy;
-            //        PathTemplateCs = TemplatePaths.PathEnemy;
-            //        PathObjectPoolCs = UnityPaths.PathEnemyPoolCs;
-            //        break;
-            //    case FeatureType.Powerup:
-            //        DirDestinationBase = UnityPaths.DirPowerupBase;
-            //        //PathTemplateCs = TemplatePaths.DirTemplate;
-            //        PathObjectPoolCs = null;
-            //        break;
-            //    case FeatureType.Strategy:
-            //        DirDestinationBase = UnityPaths.DirPlayerFireStrategy;
-            //        PathTemplateCs = TemplatePaths.PathPlayerFireStrategy;
-            //        PathObjectPoolCs = null;
-            //        break;
-            //    default:
-            //        throw new ArgumentException($"UNKNOWN FEATURE TYPE {Type}");
-            //}
         }
-
-
-
-        //public void InitPowerup(Powerup powerup)
-        //{
-        //    SubTypeName = powerup.ToString();
-        //    TemplateNameOverride = $"Basic{SubTypeName}";
-        //    DirDestinationSuffix = $@"{SubTypeName}\";
-        //    PathTemplateCs = TemplatePaths.DirPowerup + $@"{SubTypeName}\Basic{SubTypeName}Powerup.cs";
-
-        //    //switch (powerup)
-        //    //{
-        //    //    case Powerup.OnFire:
-        //    //        DirDestinationSuffix = UnityPaths.DirSuffixOnFire;
-        //    //        PathTemplateCs = TemplatePaths.PathOnFire;
-        //    //        break;
-        //    //    case Powerup.OnGetHit:
-        //    //        DirDestinationSuffix = UnityPaths.DirSuffixOnGetHit;
-        //    //        PathTemplateCs = TemplatePaths.PathOnGetHit;
-        //    //        break;
-        //    //    case Powerup.OnHit:
-        //    //        DirDestinationSuffix = UnityPaths.DirSuffixOnHit;
-        //    //        PathTemplateCs = TemplatePaths.PathOnHit;
-        //    //        break;
-        //    //    case Powerup.OnKill:
-        //    //        DirDestinationSuffix = UnityPaths.DirSuffixOnKill;
-        //    //        PathTemplateCs = TemplatePaths.PathOnKill;
-        //    //        break;
-        //    //    case Powerup.OnLevelUp:
-        //    //        DirDestinationSuffix = UnityPaths.DirSuffixOnLevelUp;
-        //    //        PathTemplateCs = TemplatePaths.PathOnLevelUp;
-        //    //        break;
-        //    //    case Powerup.Passive:
-        //    //        DirDestinationSuffix = UnityPaths.DirSuffixPassive;
-        //    //        PathTemplateCs = TemplatePaths.PathPassive;
-        //    //        break;
-        //    //    default:
-        //    //        throw new ArgumentException($"UNKNOWN POWERUP {powerup}");
-        //    //}
-        //}
 
         private static string FileName(string path)
         {
@@ -133,6 +59,12 @@ namespace Valkyrie_Feature_Adder
         public override string ToString()
         {
             return base.ToString();
+        }
+
+        public virtual string ReadTemplateCsFileContents()
+        {
+            string ret = File.ReadAllText(PathTemplate.Cs);
+            return ret;
         }
     }
 }
