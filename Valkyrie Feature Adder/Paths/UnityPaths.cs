@@ -7,75 +7,14 @@ using System.Threading.Tasks;
 
 namespace Valkyrie_Feature_Adder
 {
-    public static partial class TemplatePaths
-    {
-        public static string GetPrefabPath(string input)
-        {
-            Debug.Assert(input.EndsWith(".cs"));
-            string ret = input.Replace(".cs", ".prefab");
-            return ret;
-        }
-        public static string GetCsMetadataPath(string input)
-        {
-            Debug.Assert(input.EndsWith(".cs"));
-            string ret = input + ".meta";
-            return ret;
-        }
-        public static string GetPrefabMetadataPath(string input)
-        {
-            Debug.Assert(input.EndsWith(".cs"));
-            string ret = GetPrefabPath(input) + ".meta";
-            return ret;
-        }
-
-        public const string DirTemplate = @"C:\Users\TJ\source\repos\Valkyrie Feature Adder\Valkyrie Feature Adder\Templates\";
-
-        #region Bullet
-
-        public const string PathPlayerBullet = DirTemplate + @"Bullets\Player\BasicBullet.cs";
-        public const string PathEnemyBullet = DirTemplate + @"Bullets\Enemy\BasicEnemyBullet.cs";
-
-        #endregion Bullet
-
-        #region Enemy
-
-        public const string PathEnemy = DirTemplate + @"Enemies\BasicEnemy.cs";
-
-        #endregion Enemy
-
-        #region FireStrategies
-
-        public const string PathPlayerFireStrategy = DirTemplate + @"FireStrategies\Player\BasicStrategy.cs";
-        public const string PathEnemyFireStrategy = DirTemplate + @"FireStrategies\Enemy\BasicEnemyStrategy.cs";
-
-        #endregion FireStrategies
-
-        #region Powerup
-
-        public const string DirPowerup = DirTemplate + @"Powerups\";
-        //public const string PathOnFire = DirPowerup + @"OnFire\BasicOnFirePowerup.cs";
-        //public const string PathOnGetHit = DirPowerup + @"OnFire\BasicOnGetHitPowerup.cs";
-        //public const string PathOnHit = DirPowerup + @"OnFire\BasicOnHitowerup.cs";
-        //public const string PathOnKill = DirPowerup + @"OnFire\BasicOnKillPowerup.cs";
-        //public const string PathOnLevelUp = DirPowerup + @"OnFire\BasicOnLevelUpPowerup.cs";
-        //public const string PathPassive = DirPowerup + @"OnFire\BasicPassivePowerup.cs";
-
-        public const string PathPowerupBalanceStructTemplate = DirPowerup + @"PowerupBalanceManagerTemplate.txt";
-
-        #endregion Powerup
-    }
-
     public static class UnityPaths
     {
-        public static string TrimProjectDirectory(string input)
-        {
-            Debug.Assert(input.StartsWith(DirProject));
+        /// <summary>
+        /// The path to the directory of the root Unity project of Valkyrie Undying.
+        /// Example: @"C:\Users\TJ\Unity\Valkyrie Undying\";
+        /// </summary>
+        public const string DirProject = null;
 
-            string ret = input.Substring(DirProject.Length);
-            return ret;
-        }
-
-        public const string DirProject = @"C:\Users\TJ\Unity\Valkyrie Undying Script\";
         public const string DirAssets = DirProject + @"Assets\";
 
         public const string PathCsproj = DirProject + @"Assembly-CSharp.csproj";
@@ -108,12 +47,6 @@ namespace Valkyrie_Feature_Adder
         #region Powerup
 
         public const string DirPowerupBase = DirAssets + @"Powerups\";
-        //public const string DirSuffixOnFire = @"OnFire\";
-        //public const string DirSuffixOnGetHit = @"OnFire\";
-        //public const string DirSuffixOnHit = @"OnFire\";
-        //public const string DirSuffixOnKill = @"OnFire\";
-        //public const string DirSuffixOnLevelUp = @"OnFire\";
-        //public const string DirSuffixPassive = @"OnFire\";
 
         public const string PathPowerupBalanceManager = DirPowerupBase + @"PowerupBalanceManager.cs";
 

@@ -45,7 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnumUtil.cs" />
+    <Compile Include="BackupUtil.cs" />
+    <Compile Include="FeatureEnums.cs" />
     <Compile Include="FeatureBuilder\Bullet\EnemyBulletBuilder.cs" />
     <Compile Include="FeatureBuilder\Bullet\BulletBuilder.cs" />
     <Compile Include="FeatureBuilder\Enemy\EnemyBuilder.cs" />
@@ -55,11 +56,11 @@
     <Compile Include="FeatureBuilder\FireStrategy\PlayerFireStrategyBuilder.cs" />
     <Compile Include="FeatureBuilder\Powerup\PowerupBuilder.cs" />
     <Compile Include="FeatureBuilder\UnityFileSet.cs" />
-    <Compile Include="NewFeature.cs" />
+    <Compile Include="Paths\TemplatePaths.cs" />
     <Compile Include="PrefabUtil.cs" />
     <Compile Include="FileUtil.cs" />
     <Compile Include="Log.cs" />
-    <Compile Include="Paths.cs" />
+    <Compile Include="Paths\UnityPaths.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Templates\Bullets\Enemy\BasicEnemyBullet.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Templates\Powerups\OnLevelUp\BasicOnLevelUpPowerup.cs" />
     <Compile Include="Templates\Powerups\OnKill\BasicOnKillPowerup.cs" />
     <Compile Include="Templates\Powerups\Passive\BasicPassivePowerup.cs" />
+    <Compile Include="Program - Testing.cs" />
     <Content Include="Templates\Powerups\PowerupBalanceManagerTemplate.txt" />
     <Compile Include="Templates\TemplateCompileErrorFixes.cs" />
     <Compile Include="Templates\Bullets\Player\BasicBullet.cs" />

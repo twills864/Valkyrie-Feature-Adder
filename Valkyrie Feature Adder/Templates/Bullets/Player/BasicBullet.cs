@@ -10,7 +10,7 @@ namespace Assets.Bullets.PlayerBullets
     ///
     /// </summary>
     /// <inheritdoc/>
-    public class BasicBullet : PlayerBullet
+    public class BasicBullet : PermanentVelocityPlayerBullet
     {
         [SerializeField]
         private float Speed = GameConstants.PrefabNumber;

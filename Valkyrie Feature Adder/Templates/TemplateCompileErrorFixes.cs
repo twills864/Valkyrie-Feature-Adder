@@ -24,6 +24,8 @@ namespace Assets
 
     public class PlayerBullet { }
 
+    public class PermanentVelocityPlayerBullet { }
+
     public abstract class PlayerFireStrategy<T>
     {
         protected abstract float GetFireSpeedRatio(in PlayerFireStrategyManager.PlayerRatio ratios);
@@ -85,6 +87,8 @@ namespace Assets
         //protected abstract void OnFireStrategyEnemyActivate();
         protected abstract void OnEnemySpawn();
         //protected abstract void OnFireStrategyEnemyFrame(float deltaTime, float realDeltaTime);
+
+        public Transform transform;
     }
 
     public abstract class FireStrategyEnemy : Enemy
@@ -183,6 +187,11 @@ namespace Assets
     {
         public static SpaceUtil WorldMap => new SpaceUtil();
         public object Center => new object();
+    }
+
+    public class Transform
+    {
+        public object position { get; set; }
     }
 
     #endregion Unity

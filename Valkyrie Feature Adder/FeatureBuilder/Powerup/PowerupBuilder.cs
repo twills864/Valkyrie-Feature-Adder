@@ -8,17 +8,17 @@ namespace Valkyrie_Feature_Adder
 {
     public class PowerupBuilder : FeatureBuilder
     {
-        public override string Type => "Powerup";
+        public override string FeatureType => "Powerup";
         public override string InitialPathTemplateCs => TemplatePaths.DirPowerup;
         public override string InitialDirDestination => UnityPaths.DirPowerupBase;
         public override string InitialPathObjectPoolCs => null;
 
-        public Powerup PowerupType { get; private set; }
+        public PowerupType PowerupType { get; private set; }
         public string PowerupTypeName => PowerupType.ToString();
 
         public override string TemplateName => $"{base.TemplateName}{PowerupTypeName}";
 
-        public PowerupBuilder(string name, Powerup type) : base(name)
+        public PowerupBuilder(string name, PowerupType type) : base(name)
         {
             PowerupType = type;
 
@@ -27,7 +27,10 @@ namespace Valkyrie_Feature_Adder
             DirDestination += templateSuffix;
         }
 
-        // Example: "public struct OnFireBalance";
+        /// <summary>
+        /// The parent struct used to hold the PowerupBalanceManager entry for this Powerup.
+        /// Example: "public struct OnFireBalance"
+        /// </summary>
         public string BaseBalanceStartTag
         {
             get
