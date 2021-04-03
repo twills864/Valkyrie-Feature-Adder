@@ -21,6 +21,8 @@ namespace Valkyrie_Feature_Adder
 
             if(!needsPaths)
             {
+                LogDirectories();
+
                 CreateFeature();
                 //RunTests();
             }
@@ -37,6 +39,20 @@ namespace Valkyrie_Feature_Adder
 
             Log.Write("\r\nPress the \"any\" key to continue...", ConsoleColor.White);
             Console.ReadKey(true);
+        }
+
+        public static void LogDirectories()
+        {
+            void LogDirectory(string directoryDescription, string directoryPath)
+            {
+                Log.Write($"{directoryDescription}: ", Log.ColorPrompt);
+                Log.WriteLine(directoryPath, Log.ColorPrintInfo);
+            }
+
+            Log.WriteLine();
+            LogDirectory(" Project directory", UnityPaths.DirProject);
+            LogDirectory("Template directory", TemplatePaths.DirTemplate);
+            LogDirectory("  Backup directory", BackupUtil.DirBackup);
         }
 
         public static void CreateFeature()
