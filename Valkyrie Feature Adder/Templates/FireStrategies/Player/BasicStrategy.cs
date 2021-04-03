@@ -2,6 +2,7 @@
 using Assets.Bullets.PlayerBullets;
 using Assets.Constants;
 using Assets.Enemies;
+using Assets.FireStrategyManagers;
 using Assets.ObjectPooling;
 using Assets.Powerups.Balance;
 using Assets.Util;

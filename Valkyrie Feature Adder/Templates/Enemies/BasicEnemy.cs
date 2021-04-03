@@ -3,6 +3,7 @@ using Assets.Bullets.EnemyBullets;
 using Assets.Constants;
 using Assets.FireStrategies.EnemyFireStrategies;
 using Assets.ObjectPooling;
+using Assets.Util;
 using UnityEngine;
 
 namespace Assets.Enemies
@@ -52,7 +53,7 @@ namespace Assets.Enemies
 
         protected override void OnEnemySpawn()
         {
-
+            transform.position = SpaceUtil.WorldMap.Center;
         }
 
 #if LoopingVariantFireStrategyEnemy

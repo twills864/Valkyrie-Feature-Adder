@@ -16,6 +16,10 @@ namespace Valkyrie_Feature_Adder
         public const string NeedsToAddEnemyBullet = "Needs to create a matching bullet for this enemy. ";
 
         private static Random Rand = new Random();
+
+        /// <summary>
+        /// Returns a new random 19-digit number to represent the file ID of a new Unity object.
+        /// </summary>
         public static string NewFileId()
         {
             const int FileIdLength = 19;
@@ -35,8 +39,17 @@ namespace Valkyrie_Feature_Adder
             string ret = sb.ToString();
             return ret;
         }
+
+        /// <summary>
+        /// Returns a new random 32-digit hexadecimal number to represent the GUID of a new Unity object.
+        /// </summary>
         public static string NewGuid() => Guid.NewGuid().ToString("N");
 
+        /// <summary>
+        /// Generates a new GUID and File ID for a given feature.
+        /// Then, it uses this information to copy a metadata file, a prefab file,
+        /// and a prefab metadata file based on the feature's information.
+        /// </summary>
         public static void CopyPrefabData(FeatureBuilder feature)
         {
             FileInfo csFileInfo = new FileInfo(feature.PathTemplate.Cs);
@@ -47,95 +60,24 @@ namespace Valkyrie_Feature_Adder
             Debug.Assert(Directory.Exists(feature.DirDestination));
             #endregion Assert
 
-            string csMetaTemplate = feature.PathTemplate.CsMeta;
-            string prefabTemplate = feature.PathTemplate.Prefab;
-            string prefabMetaTemplate = feature.PathTemplate.PrefabMeta;
-
-            #region Assert
-            Debug.Assert(File.Exists(csMetaTemplate));
-            Debug.Assert(File.Exists(prefabTemplate));
-            Debug.Assert(File.Exists(prefabMetaTemplate));
-            #endregion Assert
-
-            string csMetaDestination = feature.PathDestination.CsMeta;
-            string prefabDestination = feature.PathDestination.Prefab;
-            string prefabMetaDestination = feature.PathDestination.PrefabMeta;
-
-            #region Assert
-            Debug.Assert(!File.Exists(csMetaDestination));
-            Debug.Assert(!File.Exists(prefabDestination));
-            Debug.Assert(!File.Exists(prefabMetaDestination));
-            #endregion Assert
-
             string guidCs = NewGuid();
             string guidPrefab = NewGuid();
             string fileId = NewFileId();
 
-            string csMetaText = CsMetaContents(csMetaTemplate, guidCs);
-            File.WriteAllText(csMetaDestination, csMetaText);
-
-            string prefabText = PrefabContents(prefabTemplate, guidCs, fileId);
-            File.WriteAllText(prefabDestination, prefabText);
-
-            string prefabMetaText = PrefabMetaContents(prefabMetaTemplate, guidPrefab);
-            File.WriteAllText(prefabMetaDestination, prefabMetaText);
-
-            string poolPrefabPath = feature.PathObjectPool.Prefab;
-            string featureName = feature.FeatureName;
-            AppendPoolListPrefabData(poolPrefabPath, featureName, guidPrefab, fileId);
-
-            //string fileContents = File.ReadAllText(csTemplateFilePath);
-            //fileContents = fileContents.Replace(TemplateName, FeatureName);
-
-            //File.WriteAllText(destinationPath, fileContents);
+            WriteCsMetaContents(feature, guidCs);
+            WritePrefabContents(feature, guidCs, fileId);
+            WritePrefabMetaContents(feature, guidPrefab);
+            AppendPoolListPrefabData(feature, guidPrefab, fileId);
         }
-
-
-        //public static void CopyPrefabData2(NewFeature feature)
-        //{
-        //    #region Assert
-        //    FileInfo csFileInfo = new FileInfo(feature.PathTemplateCs);
-        //    Debug.Assert(csFileInfo.Exists);
-        //    Debug.Assert(csFileInfo.Extension == ".cs");
-        //    Debug.Assert(Directory.Exists(feature.DirDestination));
-
-        //    Debug.Assert(File.Exists(feature.PathTemplateCsMeta));
-        //    Debug.Assert(File.Exists(feature.PathTemplatePrefab));
-        //    Debug.Assert(File.Exists(feature.PathTemplatePrefabMeta));
-
-        //    Debug.Assert(!File.Exists(feature.PathDestinationCsMeta));
-        //    Debug.Assert(!File.Exists(feature.PathDestinationPrefab));
-        //    Debug.Assert(!File.Exists(feature.PathDestinationPrefabMeta));
-        //    #endregion Assert
-
-        //    string guidCs = NewGuid();
-        //    string guidPrefab = NewGuid();
-        //    string fileId = NewFileId();
-
-        //    string csMetaTemplate = feature.PathTemplateCsMeta;
-        //    string csMetaDestination = feature.PathDestinationCsMeta;
-        //    string csMetaText = CsMetaContents(csMetaTemplate, guidCs);
-        //    File.WriteAllText(csMetaDestination, csMetaText);
-
-        //    string prefabTemplate = feature.PathTemplatePrefab;
-        //    string prefabDestination = feature.PathDestinationPrefab;
-        //    string prefabText = PrefabContents(prefabTemplate, guidCs, fileId);
-        //    File.WriteAllText(prefabDestination, prefabText);
-
-        //    string prefabMetaTemplate = feature.PathTemplatePrefabMeta;
-        //    string prefabMetaDestination = feature.PathDestinationPrefabMeta;
-        //    string prefabMetaText = PrefabMetaContents(prefabMetaTemplate, guidPrefab);
-        //    File.WriteAllText(prefabMetaDestination, prefabMetaText);
-
-        //    string poolPrefabPath = feature.PathObjectPoolPrefab;
-        //    string featureName = feature.FeatureName;
-        //    AppendPoolListPrefabData(poolPrefabPath, featureName, guidPrefab, fileId);
-        //}
 
         private const string TagGuidCS = "#GUIDCS#";
         private const string TagGuidPrefab = "#GUIDPREFAB#";
         private const string TagFileId = "#FILEID#";
 
+        /// <summary>
+        /// Returns a StringBuilder containing the contents of a given file.
+        /// </summary>
+        /// <param name="path">The path of the file to read.</param>
         private static StringBuilder StringBuilderFromFile(string path)
         {
             Debug.Assert(File.Exists(path));
@@ -143,45 +85,98 @@ namespace Valkyrie_Feature_Adder
             return new StringBuilder(allText);
         }
 
-        private static string CsMetaContents(string templatePath, string guidCs)
+        /// <summary>
+        /// Inserts a given GUID into the metadata file of a given feature's
+        /// code template file, then writes the results to its proper destination.
+        /// </summary>
+        /// <param name="feature">The feature to add.</param>
+        /// <param name="guidCs">The GUID to insert.</param>
+        private static void WriteCsMetaContents(FeatureBuilder feature, string guidCs)
         {
-            StringBuilder sb = StringBuilderFromFile(templatePath);
+            string templatePath = feature.PathTemplate.CsMeta;
+            string csMetaDestination = feature.PathDestination.CsMeta;
 
-            sb.Replace(TagGuidCS, guidCs);
+            Debug.Assert(File.Exists(templatePath));
+            Debug.Assert(!File.Exists(csMetaDestination));
 
-            return sb.ToString();
+            string contents = File.ReadAllText(templatePath);
+            contents = contents.Replace(TagGuidCS, guidCs);
+
+            File.WriteAllText(csMetaDestination, contents);
         }
 
-        private static string PrefabContents(string templatePath, string guidCs, string fileId)
+        /// <summary>
+        /// Inserts a given GUID and file ID into the prefab file of a given feature,
+        /// then writes the results to its proper destination.
+        /// </summary>
+        /// <param name="feature">The feature to add.</param>
+        /// <param name="guidCs">The GUID to insert.</param>
+        /// <param name="fileId">The file ID to insert.</param>
+        private static void WritePrefabContents(FeatureBuilder feature, string guidCs, string fileId)
         {
+            string templatePath = feature.PathTemplate.Prefab;
+            string prefabDestination = feature.PathDestination.Prefab;
+
+            Debug.Assert(File.Exists(templatePath));
+            Debug.Assert(!File.Exists(prefabDestination));
+
             StringBuilder sb = StringBuilderFromFile(templatePath);
 
             sb.Replace(TagFileId, fileId);
             sb.Replace(TagGuidCS, guidCs);
 
-            return sb.ToString();
+            string contents = sb.ToString();
+
+            File.WriteAllText(prefabDestination, contents);
         }
 
-        private static string PrefabMetaContents(string templatePath, string guidPrefab)
+        /// <summary>
+        /// Inserts a given GUID into the metadata file of a given feature's
+        /// prefab template file, then writes the results to its proper destination.
+        /// </summary>
+        /// <param name="feature">The feature to add.</param>
+        /// <param name="guidPrefab">The GUID to insert.</param>
+        private static void WritePrefabMetaContents(FeatureBuilder feature, string guidPrefab)
         {
-            StringBuilder sb = StringBuilderFromFile(templatePath);
+            string templatePath = feature.PathTemplate.PrefabMeta;
+            string prefabMetaDestination = feature.PathDestination.PrefabMeta;
 
-            sb.Replace(TagGuidPrefab, guidPrefab);
+            Debug.Assert(File.Exists(templatePath));
+            Debug.Assert(!File.Exists(prefabMetaDestination));
 
-            return sb.ToString();
+            string contents = File.ReadAllText(templatePath);
+            contents = contents.Replace(TagGuidPrefab, guidPrefab);
+
+            File.WriteAllText(prefabMetaDestination, contents);
         }
 
-        private static void AppendPoolListPrefabData(string poolPrefabPath, string featureName, string guidPrefab, string fileId)
+        /// <summary>
+        /// Attaches a new feature to a given the Unity object of a given Object Pool
+        /// by adding an entry for the given feature's prefab to the metadata
+        /// of the Object Pool.
+        /// </summary>
+        /// <param name="feature">The feature to add.</param>
+        /// <param name="guidPrefab">The GUID of the new feature's prefab.</param>
+        /// <param name="fileId">The file ID of the new feature's prefab.</param>
+        private static void AppendPoolListPrefabData(FeatureBuilder feature, string guidPrefab, string fileId)
         {
+            string poolPrefabPath = feature.PathObjectPool.Prefab;
+            string featureName = feature.FeatureName;
+
             Debug.Assert(File.Exists(poolPrefabPath));
             string prefabToAdd = $"  {featureName}Prefab: {{fileID: {fileId}, guid: {guidPrefab},\r\n    type: 3}}\r\n";
 
             File.AppendAllText(poolPrefabPath, prefabToAdd);
         }
 
-
-
-        public static void AddFireStrategyToGameSceneFireStrategyManager(FeatureBuilder feature)
+        /// <summary>
+        /// Adds a new entry for a given fire strategy's PowerupBalanaceManager value
+        /// to the GameScene.unity file of the project.
+        /// Unity would automatically create this entry at runtime, but it would assign a default value of 0.
+        /// This would cause the new fire strategy to fire every frame by default.
+        /// (A value of 1 represents a fire speed equal to the base cannon's fire speed.)
+        /// </summary>
+        public static void AddFireStrategyToGameSceneFireStrategyManager(FireStrategyBuilder feature)
         {
             string gameScenePath = UnityPaths.PathGameScene;
 
@@ -196,7 +191,7 @@ namespace Valkyrie_Feature_Adder
 
             string newStrategyLine = $"      {featureName}: 1";
 
-            FileUtil.InsertLineToFile(gameScenePath, lines, newStrategyLine, endTagLine);
+            FileUtil.InsertLineToFile(gameScenePath, lines, newStrategyLine, endTagLine, true);
         }
     }
 }
