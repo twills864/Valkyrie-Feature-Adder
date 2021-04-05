@@ -54,9 +54,7 @@ namespace Valkyrie_Feature_Adder
 
         #region Object Pooling
 
-        #region Paths
-
-        #region Object Pools
+        #region Pools
 
         public const string DirPoolLists = DirAssets + @"ObjectPooling\PoolLists\";
 
@@ -68,19 +66,15 @@ namespace Valkyrie_Feature_Adder
         public const string PathEnemyBulletPoolCs = PathEnemyBulletPool + @".cs";
         public const string PathEnemyBulletPoolPrefab = PathEnemyBulletPool + @".prefab";
 
-
         private const string PathEnemyPool = DirPoolLists + @"EnemyPoolList";
         public const string PathEnemyPoolCs = PathEnemyPool + @".cs";
         public const string PathEnemyPoolPrefab = PathEnemyPool + @".prefab";
-
 
         private const string PathUIElementPool = DirPoolLists + @"UIElementPoolList";
         public const string PathUIElementPoolCs = DirPoolLists + @".cs";
         public const string PathUIElementPoolPrefab = DirPoolLists + @".prefab";
 
-        #endregion Object Pools
-
-        #endregion Paths
+        #endregion Pools
 
         #region Tags
 
@@ -94,6 +88,10 @@ namespace Valkyrie_Feature_Adder
         public const string TagGameSceneFireStrategyManagerStart = "_FireStrategyManager:";
         public const string TagGameSceneFireStrategyManagerEnd = "PowerupBalance:";
 
+        #endregion Tags
+
+        #endregion Object Pooling
+
         #region PowerupBalanceManager
 
         public const string TagPowerupBalanceManagerVariablesEnd = "[Serializable]";
@@ -103,10 +101,6 @@ namespace Valkyrie_Feature_Adder
         public const string TagPowerupBalanceManagerSubTypeEnd = "Balance";
 
         #endregion PowerupBalanceManager
-
-        #endregion Tags
-
-        #endregion Object Pooling
 
         #region Existing Prefabs
 

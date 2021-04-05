@@ -22,13 +22,22 @@ namespace Assets
 
     #region Player
 
-    public class PlayerBullet { }
+    public class PlayerBullet
+    {
+        public virtual int Damage { get; }
+        protected virtual void OnPlayerBulletInit() { }
+        protected virtual void OnPermanentVelocityBulletInit() { }
+        protected virtual void OnActivate() { }
+        public virtual void OnSpawn() { }
+        protected virtual void OnPlayerBulletFrameRun(float deltaTime, float realDeltaTime) { }
+    }
 
-    public class PermanentVelocityPlayerBullet { }
+    public class PermanentVelocityPlayerBullet : PlayerBullet { }
 
     public abstract class PlayerFireStrategy<T>
     {
         protected abstract float GetFireSpeedRatio(in PlayerFireStrategyManager.PlayerRatio ratios);
+        public virtual PlayerBullet[] GetBullets(int weaponLevel, Vector3 playerFirePos) => null;
         public PlayerFireStrategy(BasicBullet bullet, PlayerFireStrategyManager manager) { }
     }
 
@@ -212,5 +221,7 @@ namespace Assets.ObjectPooling { }
 namespace Assets.Powerups.Balance { }
 
 namespace Assets.Constants { }
+
+namespace Assets.GameTasks { }
 
 #endregion Namespaces

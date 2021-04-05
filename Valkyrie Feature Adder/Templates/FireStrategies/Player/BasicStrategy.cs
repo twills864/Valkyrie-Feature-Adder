@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Assets.Bullets.PlayerBullets;
 using Assets.Constants;
 using Assets.Enemies;
@@ -22,5 +23,11 @@ namespace Assets.FireStrategies.PlayerFireStrategies
 
         protected override float GetFireSpeedRatio(in PlayerFireStrategyManager.PlayerRatio ratios)
             => ratios.Basic;
+
+        public override PlayerBullet[] GetBullets(int weaponLevel, Vector3 playerFirePos)
+        {
+            var ret = base.GetBullets(weaponLevel, playerFirePos);
+            return ret;
+        }
     }
 }

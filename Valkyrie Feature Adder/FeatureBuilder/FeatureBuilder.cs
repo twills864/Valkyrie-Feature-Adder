@@ -107,7 +107,7 @@ namespace Valkyrie_Feature_Adder
         /// <summary>
         /// Returns the contents of the C# source code template file
         /// representing this feature.
-        /// Can be overridden to alter contents of file as needed.
+        /// Can be overridden to alter the contents of file as needed.
         /// </summary>
         public virtual string ReadTemplateCsFileContents()
         {

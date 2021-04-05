@@ -41,6 +41,14 @@ namespace Valkyrie_Feature_Adder
             Console.ReadKey(true);
         }
 
+        public static void RunTests()
+        {
+            string featureName = Log.ReadStringFromConsole(PromptTest);
+            RunBulletTests(featureName);
+            RunPowerupTests(featureName);
+            RunEnemyTests(featureName);
+        }
+
         public static void LogDirectories()
         {
             void LogDirectory(string directoryDescription, string directoryPath)
@@ -77,14 +85,6 @@ namespace Valkyrie_Feature_Adder
                 default:
                     throw new ArgumentException($"UNKNOWN FEATURE {featureType}");
             }
-        }
-
-        public static void RunTests()
-        {
-            string featureName = Log.ReadStringFromConsole(PromptTest);
-            RunBulletTests(featureName);
-            RunPowerupTests(featureName);
-            RunEnemyTests(featureName);
         }
 
         #region Bullet
@@ -137,7 +137,7 @@ namespace Valkyrie_Feature_Adder
 
         public static void AddAdditionalBullet(BulletBuilder feature)
         {
-            LogProgress("additional Bullet", feature);
+            LogProgress("Additional Bullet", feature);
 
             AddFeatureWithPrefab(feature);
         }
