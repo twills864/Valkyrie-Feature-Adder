@@ -12,7 +12,7 @@ namespace Assets.Bullets.PlayerBullets
     ///
     /// </summary>
     /// <inheritdoc/>
-    public class BasicBullet : PermanentVelocityPlayerBullet /* PlayerBullet */
+    public class BasicBullet : PlayerBullet
     {
         public override int Damage => BasicDamage;
 
@@ -21,14 +21,7 @@ namespace Assets.Bullets.PlayerBullets
 
         public int BasicDamage { get; set; }
 
-        // Keep one
-        //protected override void OnPlayerBulletInit()
-        //{
-        //
-        //}
-
-        // Keep one
-        protected override void OnPermanentVelocityBulletInit()
+        protected override void OnPlayerBulletInit()
         {
 
         }

@@ -62,7 +62,7 @@ namespace Assets
     public abstract class OnHitPowerup : Powerup
     {
         protected abstract void InitBalance(in PowerupBalanceManager.OnHitBalance balance);
-        public abstract void OnHit(Enemy enemy, PlayerBullet bullet);
+        public abstract void OnHit(Enemy enemy, PlayerBullet bullet, Vector3 hitPosition);
     }
 
     public abstract class OnKillPowerup : Powerup

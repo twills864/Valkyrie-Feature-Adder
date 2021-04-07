@@ -35,7 +35,7 @@ namespace Assets.Powerups
 
         public override void OnFire(Vector3 position, PlayerBullet[] bullets)
         {
-            GameManager.Instance.CreateFleetingText("[OnFire] BasicOnFire", SpaceUtil.WorldMap.Center);
+            GameManager.Instance.CreateFleetingText("[OnFire] BasicOnFire", position);
         }
     }
 }

@@ -33,9 +33,9 @@ namespace Assets.Powerups
             PowerCalculator = new SumLevelValueCalculator(powerBase, powerIncrease);
         }
 
-        public override void OnHit(Enemy enemy, PlayerBullet bullet)
+        public override void OnHit(Enemy enemy, PlayerBullet bullet, Vector3 hitPosition)
         {
-            GameManager.Instance.CreateFleetingText("[OnHit] BasicOnHit", SpaceUtil.WorldMap.Center);
+            GameManager.Instance.CreateFleetingText("[OnHit] BasicOnHit", hitPosition);
         }
     }
 }
