@@ -23,8 +23,8 @@ namespace Valkyrie_Feature_Adder
             {
                 LogDirectories();
 
-                CreateFeature();
-                //RunTests();
+                //CreateFeature();
+                RunTests();
             }
             else
             {
