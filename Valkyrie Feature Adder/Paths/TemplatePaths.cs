@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Valkyrie_Feature_Adder
+﻿namespace Valkyrie_Feature_Adder
 {
     public static partial class TemplatePaths
     {

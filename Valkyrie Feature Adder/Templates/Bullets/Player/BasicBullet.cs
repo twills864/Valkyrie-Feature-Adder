@@ -16,8 +16,19 @@ namespace Assets.Bullets.PlayerBullets
     {
         public override int Damage => BasicDamage;
 
+        #region Prefabs
+
         [SerializeField]
-        private float Speed = GameConstants.PrefabNumber;
+        private float _Speed = GameConstants.PrefabNumber;
+
+        #endregion Prefabs
+
+        #region Prefab Properties
+
+        [SerializeField]
+        public float Speed => _Speed;
+
+        #endregion Prefab Properties
 
         public int BasicDamage { get; set; }
 

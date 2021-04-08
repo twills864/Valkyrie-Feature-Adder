@@ -6,7 +6,6 @@ using Assets.ObjectPooling;
 using Assets.Util;
 using UnityEngine;
 
-
 namespace Assets.Bullets.EnemyBullets
 {
     /// <summary>
@@ -15,7 +14,20 @@ namespace Assets.Bullets.EnemyBullets
     /// <inheritdoc/>
     public class BasicEnemyBullet : PermanentVelocityEnemyBullet
     {
+        #region Prefabs
+
         [SerializeField]
-        private float Speed = GameConstants.PrefabNumber;
+        private float _Speed = GameConstants.PrefabNumber;
+
+        #endregion Prefabs
+
+        #region Prefab Properties
+
+        [SerializeField]
+        public float Speed => _Speed;
+
+        #endregion Prefab Properties
+
+
     }
 }

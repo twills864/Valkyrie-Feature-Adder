@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Valkyrie_Feature_Adder
+﻿namespace Valkyrie_Feature_Adder
 {
     public class PowerupBuilder : FeatureBuilder
     {

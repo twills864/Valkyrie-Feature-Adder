@@ -15,6 +15,20 @@ namespace Assets.Enemies
     /// <inheritdoc/>
     public class BasicEnemy : Enemy
     {
+        #region Prefabs
+
+        [SerializeField]
+        private float _Speed = GameConstants.PrefabNumber;
+
+        #endregion Prefabs
+
+        #region Prefab Properties
+
+        [SerializeField]
+        public float Speed => _Speed;
+
+        #endregion Prefab Properties
+
 #if LoopingVariantFireStrategyEnemy
         protected override EnemyFireStrategy InitialFireStrategy()
             => new VariantLoopingEnemyFireStrategy<BasicEnemyBullet>(FireSpeed, FireSpeedVariance);
