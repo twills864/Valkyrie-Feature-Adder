@@ -50,6 +50,8 @@ artifacts/
 *_i.h
 *.ilk
 *.meta
+!Valkyrie Feature Adder/Templates/**/*.cs.meta
+!Valkyrie Feature Adder/Templates/**/*.prefab.meta
 *.obj
 *.pch
 *.pdb
