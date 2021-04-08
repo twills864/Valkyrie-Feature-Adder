@@ -37,7 +37,7 @@ namespace Valkyrie_Feature_Adder
                 Log.WriteLine(PathError, Log.ColorErrorDetails);
             }
 
-            Log.Write("\r\nPress the \"any\" key to continue...", ConsoleColor.White);
+            Log.Write("\r\nPress any key to continue...", ConsoleColor.White);
             Console.ReadKey(true);
         }
 
