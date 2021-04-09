@@ -22,12 +22,14 @@ namespace Assets.Enemies
 
         #endregion Prefabs
 
+
         #region Prefab Properties
 
         [SerializeField]
         public float Speed => _Speed;
 
         #endregion Prefab Properties
+
 
 #if LoopingVariantFireStrategyEnemy
         protected override EnemyFireStrategy InitialFireStrategy()

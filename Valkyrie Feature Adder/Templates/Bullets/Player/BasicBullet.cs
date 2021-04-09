@@ -23,12 +23,14 @@ namespace Assets.Bullets.PlayerBullets
 
         #endregion Prefabs
 
+
         #region Prefab Properties
 
         [SerializeField]
         public float Speed => _Speed;
 
         #endregion Prefab Properties
+
 
         public int BasicDamage { get; set; }
 
