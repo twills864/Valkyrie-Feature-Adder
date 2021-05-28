@@ -26,7 +26,6 @@ namespace Assets.Bullets.PlayerBullets
 
         #region Prefab Properties
 
-        [SerializeField]
         public float Speed => _Speed;
 
         #endregion Prefab Properties
