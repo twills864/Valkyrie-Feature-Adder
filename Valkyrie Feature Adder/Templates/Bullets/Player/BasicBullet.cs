@@ -15,6 +15,7 @@ namespace Assets.Bullets.PlayerBullets
     public class BasicBullet : PlayerBullet
     {
         public override int Damage => BasicDamage;
+        public override AudioClip FireSound => SoundBank.LaserGeneric;
 
         #region Prefabs
 

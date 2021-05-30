@@ -96,7 +96,7 @@ namespace Valkyrie_Feature_Adder
             int i = 0;
             while (lines[i] != "    public class BasicEnemy : Enemy")
                 i++;
-            lines[i] = "    public class BasicEnemy : FireStrategyEnemy";
+            lines[i] = "    public class BasicEnemy : AutomaticFireStrategyEnemy";
         }
     }
 }

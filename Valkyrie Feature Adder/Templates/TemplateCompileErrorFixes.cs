@@ -21,6 +21,7 @@ namespace Assets
     public class PlayerBullet
     {
         public virtual int Damage { get; }
+        public virtual AudioClip FireSound { get; }
         protected virtual void OnPlayerBulletInit() { }
         protected virtual void OnPermanentVelocityBulletInit() { }
         protected virtual void OnActivate() { }
@@ -87,7 +88,7 @@ namespace Assets
     public abstract class Enemy
     {
         //protected abstract EnemyFireStrategy InitialFireStrategy();
-
+        public abstract AudioClip FireSound { get; }
         protected abstract void OnEnemyInit();
         //protected abstract void OnFireStrategyEnemyActivate();
         protected abstract void OnEnemySpawn();
@@ -168,6 +169,12 @@ namespace Assets
         public static LoopingFrameTimer Default() => new LoopingFrameTimer();
     }
 
+    public static class SoundBank
+    {
+        public static AudioClip LaserGeneric => null;
+        public static AudioClip GunPistol => null;
+    }
+
     #endregion Valkyrie
 
 
@@ -198,6 +205,9 @@ namespace Assets
     {
         public object position { get; set; }
     }
+
+    public class AudioClip
+    { }
 
     #endregion Unity
 }

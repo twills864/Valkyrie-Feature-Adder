@@ -15,6 +15,8 @@ namespace Assets.Enemies
     /// <inheritdoc/>
     public class BasicEnemy : Enemy
     {
+        public override AudioClip FireSound => SoundBank.GunPistol;
+
         #region Prefabs
 
         [SerializeField]
@@ -32,7 +34,7 @@ namespace Assets.Enemies
 
 #if LoopingVariantFireStrategyEnemy
         protected override EnemyFireStrategy InitialFireStrategy()
-            => new VariantLoopingEnemyFireStrategy<BasicEnemyBullet>(FireSpeed, FireSpeedVariance);
+            => new VariantLoopingEnemyFireStrategy<BasicEnemyBullet>(VariantFireSpeed);
 #endif
 #if CustomFireStrategyEnemy
         protected override EnemyFireStrategy InitialFireStrategy()

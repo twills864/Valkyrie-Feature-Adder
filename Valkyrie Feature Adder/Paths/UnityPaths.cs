@@ -11,7 +11,7 @@
         public const string DirAssets = DirProject + @"Assets\";
 
         public const string PathCsproj = DirProject + @"Assembly-CSharp.csproj";
-        public const string PathGameScene = DirAssets + @"GameScene.unity";
+        public const string PathGameScene = DirAssets + @"Scenes\GameScene.unity";
         public const string PathGameManagerCs = DirAssets + @"GameManager.cs";
         public const string PathFireStrategyManager = DirAssets + @"BalanceManagers\FireStrategyManager.cs";
 
@@ -71,13 +71,15 @@
 
         #region Tags
 
+        public const string TagSerializableAttribute = "[Serializable]";
+
         public const string TagPlayerMainCannon = "#endregion Fired Bullets";
         public const string TagPlayerAdditionalBullets = "#endregion Additional Bullets";
         public const string TagGenericPrefabList = "#pragma warning restore 0414";
         public const string TagGameManagerInitFireStrategiesStart = "private void InitFireStrategies()";
         public const string TagGameManagerInitFireStrategiesEnd = "};";
         public const string TagFireStrategyManagerPlayerRatioStart = "public struct PlayerRatio";
-        public const string TagFireStrategyManagerPlayerRatioEnd = "}";
+        public const string TagFireStrategyManagerPlayerRatioEnd = TagSerializableAttribute;
         public const string TagGameSceneFireStrategyManagerStart = "_FireStrategyManager:";
         public const string TagGameSceneFireStrategyManagerEnd = "PowerupBalance:";
 
@@ -87,7 +89,7 @@
 
         #region PowerupBalanceManager
 
-        public const string TagPowerupBalanceManagerVariablesEnd = "[Serializable]";
+        public const string TagPowerupBalanceManagerVariablesEnd = TagSerializableAttribute;
         public const string TagPowerupBalanceManagerBalanceStructEnd = "        }";
 
         public const string TagPowerupBalanceManagerSubTypeStart = "public struct ";
