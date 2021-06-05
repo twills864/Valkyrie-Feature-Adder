@@ -67,14 +67,18 @@
     <Compile Include="Templates\Enemies\BasicEnemy.cs" />
     <Compile Include="Templates\FireStrategies\Enemy\BasicEnemyStrategy.cs" />
     <Compile Include="Templates\FireStrategies\Player\BasicStrategy.cs" />
-    <Compile Include="Templates\Powerups\OnFire\BasicOnFirePowerup.cs" />
-    <Compile Include="Templates\Powerups\OnGetHit\BasicOnGetHitPowerup.cs" />
-    <Compile Include="Templates\Powerups\OnHit\BasicOnHitPowerup.cs" />
-    <Compile Include="Templates\Powerups\OnLevelUp\BasicOnLevelUpPowerup.cs" />
-    <Compile Include="Templates\Powerups\OnKill\BasicOnKillPowerup.cs" />
-    <Compile Include="Templates\Powerups\Passive\BasicPassivePowerup.cs" />
+    <Compile Include="Templates\Powerups\BasicPowerups\OnFire\BasicOnFirePowerup.cs" />
+    <Compile Include="Templates\Powerups\BasicPowerups\OnGetHit\BasicOnGetHitPowerup.cs" />
+    <Compile Include="Templates\Powerups\BasicPowerups\OnHit\BasicOnHitPowerup.cs" />
+    <Compile Include="Templates\Powerups\BasicPowerups\OnLevelUp\BasicOnLevelUpPowerup.cs" />
+    <Compile Include="Templates\Powerups\BasicPowerups\OnKill\BasicOnKillPowerup.cs" />
+    <Compile Include="Templates\Powerups\BasicPowerups\Passive\BasicPassivePowerup.cs" />
     <Compile Include="Program - Testing.cs" />
     <Content Include="Templates\Powerups\PowerupBalanceManagerTemplate.txt" />
+    <Compile Include="Templates\Powerups\DefaultWeaponPowerups\OnDefaultWeaponFire\BasicOnDefaultWeaponFirePowerup.cs" />
+    <Compile Include="Templates\Powerups\DefaultWeaponPowerups\OnDefaultWeaponHit\BasicOnDefaultWeaponHitPowerup.cs" />
+    <Compile Include="Templates\Powerups\DefaultWeaponPowerups\OnDefaultWeaponKill\BasicOnDefaultWeaponKillPowerup.cs" />
+    <Compile Include="Templates\Powerups\DefaultWeaponPowerups\OnDefaultWeaponLevelUp\BasicOnDefaultWeaponLevelUpPowerup.cs" />
     <Compile Include="Templates\TemplateCompileErrorFixes.cs" />
     <Compile Include="Templates\Bullets\Player\BasicBullet.cs" />
   </ItemGroup>

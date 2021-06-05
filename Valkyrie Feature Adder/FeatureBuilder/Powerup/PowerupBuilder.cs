@@ -10,14 +10,24 @@
         public PowerupType PowerupType { get; private set; }
         public string PowerupTypeName => PowerupType.ToString();
 
+        private const PowerupType FirstOnFireEnum = PowerupType.OnDefaultWeaponFire;
+        public bool IsDefaultWeapon => PowerupType >= FirstOnFireEnum;
+
         public override string TemplateName => $"{base.TemplateName}{PowerupTypeName}";
 
         public PowerupBuilder(string name, PowerupType type) : base(name)
         {
             PowerupType = type;
 
-            string templateSuffix = $@"{PowerupTypeName}\";
+            // Powerups are sorted into directories based on type.
+            // EXAMPLES:
+            // Powerups\BasicPowerups\OnHit\SmitePowerup.cs
+            // Powerups\DefaultWeaponPowerups\OnDefaultWeaponFire\FireTwicePowerup.cs
+            string powerupTypeDirectory = IsDefaultWeapon ?
+                TemplatePaths.DirNameDefaultWeaponPowerups : TemplatePaths.DirNameBasicPowerups;
+            string templateSuffix = $@"{powerupTypeDirectory}\{PowerupTypeName}\";
             PathTemplate.Cs += $"{templateSuffix}{TemplateName}Powerup.cs";
+
             DirDestination += templateSuffix;
         }
 

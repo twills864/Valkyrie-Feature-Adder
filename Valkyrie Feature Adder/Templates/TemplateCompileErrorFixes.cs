@@ -29,6 +29,9 @@ namespace Assets
         protected virtual void OnPlayerBulletFrameRun(float deltaTime, float realDeltaTime) { }
     }
 
+    public class DefaultBullet : PlayerBullet { }
+
+
     public class PermanentVelocityPlayerBullet : PlayerBullet { }
 
     public abstract class PlayerFireStrategy<T>
@@ -43,6 +46,9 @@ namespace Assets
     #region Powerup
 
     public abstract class Powerup { /*public abstract void Init();*/ }
+
+
+    #region Basic
 
     public abstract class OnFirePowerup : Powerup
     {
@@ -80,6 +86,38 @@ namespace Assets
         protected abstract void InitBalance(in PowerupBalanceManager.PassiveBalance balance);
         public abstract void RunFrame(float deltaTime, float realDeltaTime);
     }
+
+    #endregion Basic
+
+
+    #region Default Weapon
+
+    public abstract class OnDefaultWeaponFirePowerup : Powerup
+    {
+        protected abstract void InitBalance(in PowerupBalanceManager.OnDefaultWeaponFireBalance balance);
+        public abstract void OnFire(Vector3 position, DefaultBullet[] bullets);
+    }
+
+    public abstract class OnDefaultWeaponHitPowerup : Powerup
+    {
+        protected abstract void InitBalance(in PowerupBalanceManager.OnDefaultWeaponHitBalance balance);
+        public abstract void OnHit(Enemy enemy, DefaultBullet bullet, Vector3 hitPosition);
+    }
+
+    public abstract class OnDefaultWeaponKillPowerup : Powerup
+    {
+        protected abstract void InitBalance(in PowerupBalanceManager.OnDefaultWeaponKillBalance balance);
+        public abstract void OnKill(Enemy enemy, DefaultBullet bullet);
+    }
+
+    public abstract class OnDefaultWeaponLevelUpPowerup : Powerup
+    {
+        protected abstract void InitBalance(in PowerupBalanceManager.OnDefaultWeaponLevelUpBalance balance);
+        public abstract void OnLevelUp();
+
+    }
+
+    #endregion Default Weapon
 
     #endregion Powerup
 
@@ -153,6 +191,11 @@ namespace Assets
         public struct OnKillBalance { public BasicTemplate BasicOnKill; }
         public struct OnLevelUpBalance { public BasicTemplate BasicOnLevelUp; }
         public struct PassiveBalance { public BasicTemplate BasicPassive; }
+
+        public struct OnDefaultWeaponFireBalance { public BasicTemplate BasicOnDefaultWeaponFire; }
+        public struct OnDefaultWeaponHitBalance { public BasicTemplate BasicOnDefaultWeaponHit; }
+        public struct OnDefaultWeaponKillBalance { public BasicTemplate BasicOnDefaultWeaponKill; }
+        public struct OnDefaultWeaponLevelUpBalance { public BasicTemplate BasicOnDefaultWeaponLevelUp; }
 
         public struct BasicTemplate { public Template Chance; public Template Power; }
         public struct Template { public float Base; public float Increase; }

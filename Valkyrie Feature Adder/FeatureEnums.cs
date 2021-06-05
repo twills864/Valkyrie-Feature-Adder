@@ -22,6 +22,11 @@
         OnKill,
         OnLevelUp,
         Passive,
+
+        OnDefaultWeaponFire,
+        OnDefaultWeaponHit,
+        OnDefaultWeaponKill,
+        OnDefaultWeaponLevelUp
     }
 
     public enum EnemyType

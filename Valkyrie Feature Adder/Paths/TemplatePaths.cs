@@ -35,6 +35,9 @@
 
         public const string PathPowerupBalanceStructTemplate = DirPowerup + @"PowerupBalanceManagerTemplate.txt";
 
+        public const string DirNameBasicPowerups = "BasicPowerups";
+        public const string DirNameDefaultWeaponPowerups = "DefaultWeaponPowerups";
+
         #endregion Powerup
     }
 }
